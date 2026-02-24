@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fieldnotes | User + Codex Dialogue</title>
+  <meta name="description" content="A readable dialogue showing how an idea became an interactive map website through iterative user-agent collaboration." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Newsreader:opsz,wght@6..72,500;6..72,700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --paper: #f7f4eb;
+      --paper-alt: #efe9db;
+      --ink: #1d1b17;
+      --ink-soft: #58534a;
+      --accent: #1f7065;
+      --line: #d5cfbf;
+      --terminal: #fffdf7;
+      --user: #dff2ee;
+      --codex: #ece6ff;
+      --shadow: rgba(35, 28, 18, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 10% 8%, #fffef9 0, transparent 35%),
+        radial-gradient(circle at 90% 0%, #f2ecdd 0, transparent 30%),
+        linear-gradient(145deg, var(--paper), var(--paper-alt));
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      line-height: 1.45;
+    }
+
+    .wrap {
+      width: min(980px, 92vw);
+      margin: 2rem auto 3rem;
+    }
+
+    .hero {
+      margin-bottom: 1rem;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 1rem 1.1rem;
+      background: rgba(255, 255, 255, 0.62);
+      box-shadow: 0 8px 30px var(--shadow);
+    }
+
+    .label {
+      margin: 0;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+
+    h1 {
+      margin: 0.2rem 0 0;
+      font: 700 clamp(1.35rem, 2.8vw, 2rem) "Newsreader", serif;
+      letter-spacing: 0.01em;
+    }
+
+    .sub {
+      margin: 0.45rem 0 0;
+      color: var(--ink-soft);
+      max-width: 72ch;
+      font-size: 0.92rem;
+    }
+
+    .terminal {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--terminal);
+      box-shadow: 0 14px 40px var(--shadow);
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+
+    .terminal-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.52rem 0.7rem;
+      border-bottom: 1px solid var(--line);
+      background: #f3eee2;
+      font-size: 0.78rem;
+      color: var(--ink-soft);
+    }
+
+    .lights { display: flex; gap: 0.4rem; }
+    .dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      background: #ddd;
+    }
+    .dot:nth-child(1){ background:#ffd28a; }
+    .dot:nth-child(2){ background:#b7e8c7; }
+    .dot:nth-child(3){ background:#bfd8ff; }
+
+    .content { padding: 1rem; display: grid; gap: 1rem; }
+
+    .bubble {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 0.7rem 0.8rem;
+      max-width: 84ch;
+      font-size: 0.92rem;
+      white-space: pre-wrap;
+    }
+
+    .user { background: var(--user); margin-right: 5rem; }
+    .codex { background: var(--codex); margin-left: 5rem; }
+
+    .speaker {
+      display: inline-block;
+      margin-bottom: 0.4rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      padding: 0.8rem;
+    }
+
+    .panel h2 {
+      margin: 0 0 0.5rem;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ink-soft);
+    }
+
+    pre {
+      margin: 0;
+      overflow: auto;
+      font-size: 0.82rem;
+      line-height: 1.35;
+      color: #2a332f;
+      background: #f9f8f3;
+      border: 1px solid #e4dfd2;
+      border-radius: 8px;
+      padding: 0.65rem;
+    }
+
+    .mermaid {
+      background: #f9f8f3;
+      border: 1px solid #e4dfd2;
+      border-radius: 8px;
+      padding: 0.5rem;
+      overflow-x: auto;
+    }
+
+    .footer {
+      margin-top: 1rem;
+      color: var(--ink-soft);
+      font-size: 0.82rem;
+      text-align: center;
+    }
+
+    @media (max-width: 760px) {
+      .user, .codex { margin-left: 0; margin-right: 0; }
+      .content { padding: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <p class="label">Fieldnotes</p>
+      <h1>How A Hand-Drawn Map Became A Public Interactive Archive</h1>
+      <p class="sub">A readable user + Codex dialogue showing practical agentic coding: define scope, ship early, adjust through feedback, recover from bugs, and polish for public use.</p>
+    </section>
+
+    <section class="terminal">
+      <div class="terminal-bar">
+        <div class="lights"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+        <span>session://futurecreek-dialogue</span>
+      </div>
+
+      <div class="content">
+        <article class="bubble user"><span class="speaker">User</span>
+I have a hand-drawn map and I want it to *be* the website. Can people click locations to explore photos and videos?</article>
+
+        <article class="bubble codex"><span class="speaker">Codex</span>
+Yes. We’ll ship a first version quickly:
+1) GitHub repo + public Pages site
+2) your map as the base layer
+3) clickable media locations
+4) pop-up viewer for photo/video</article>
+
+        <article class="bubble user"><span class="speaker">User</span>
+Use this exact file: Map.jpg in Downloads.</article>
+
+        <article class="bubble codex"><span class="speaker">Codex</span>
+Pivot accepted. Swapping placeholders for the real source map immediately.</article>
+
+        <article class="bubble user"><span class="speaker">User</span>
+The creek overlay line doesn’t match my dark river line exactly.</article>
+
+        <article class="bubble codex"><span class="speaker">Codex</span>
+We’ll use calibration mode. You click along the real line; I convert those clicks into path coordinates and lock that path as canonical.</article>
+
+        <article class="bubble user"><span class="speaker">User</span>
+Buttons broke. Clicking Undo/Clear adds map points instead.</article>
+
+        <article class="bubble codex"><span class="speaker">Codex</span>
+Bug confirmed. Event handling was too broad. Fix: scope click-capture to map surface and exclude controls.</article>
+
+        <article class="bubble user"><span class="speaker">User</span>
+Now buttons work but map point placement stopped.</article>
+
+        <article class="bubble codex"><span class="speaker">Codex</span>
+Second bug confirmed. Click filter became too strict. Fix: allow frame clicks, block only UI overlays and pin buttons.</article>
+
+        <article class="bubble user"><span class="speaker">User</span>
+I have real media, some videos are .MOV.</article>
+
+        <article class="bubble codex"><span class="speaker">Codex</span>
+Convert MOV → MP4 for browser compatibility, import files, generate media data, then use a visual placement mode so you click locations instead of typing coordinates.</article>
+
+        <article class="bubble user"><span class="speaker">User</span>
+Can we make it nicer than dots?</article>
+
+        <article class="bubble codex"><span class="speaker">Codex</span>
+Yes: floating polaroid cards, hover lift + creek glow, video badges, and lightbox with prev/next and keyboard navigation.</article>
+
+        <article class="bubble user"><span class="speaker">User</span>
+Final edits: rename pieces, dates, remove one asset, refine wording, add an Acknowledgement pop-up.</article>
+
+        <article class="bubble codex"><span class="speaker">Codex</span>
+Applied incrementally and pushed each change live. Final result is curated, place-aware, and maintainable.</article>
+
+        <section class="panel">
+          <h2>ASCII Process Map</h2>
+<pre>Idea
+  |
+  v
+Prototype (ship early) --> Publish --> Real feedback
+  |                            |            |
+  |                            v            v
+  +--> Bug 1 (UI clicks) --> Fix 1 --> Retest
+  +--> Bug 2 (no map clicks) -> Fix 2 --> Retest
+  |
+  v
+Calibration + Placement Tooling
+  |
+  v
+Media Import + Format Conversion
+  |
+  v
+UX Polish + Copy + Cultural Context
+  |
+  v
+Public interactive archive</pre>
+        </section>
+
+        <section class="panel">
+          <h2>Mermaid Sequence</h2>
+          <div class="mermaid">sequenceDiagram
+participant U as User
+participant C as Codex
+participant S as Site
+U->>C: Build map-first interactive website
+C->>S: Scaffold + publish first version
+U->>C: Use exact map file
+C->>S: Swap source map
+U->>C: Overlay misaligned
+C->>S: Add calibration mode
+U->>C: Reports button bug
+C->>S: Patch click handling
+U->>C: Reports placement bug
+C->>S: Patch click scope again
+U->>C: Provides media + placement data
+C->>S: Import media, apply coordinates
+U->>C: Request UX polish
+C->>S: Polaroid cards + lightbox nav
+U->>C: Final copy/culture edits
+C->>S: Push final published state</div>
+        </section>
+
+        <section class="panel">
+          <h2>Key Lessons For Newcomers</h2>
+          <pre>1) Start with a thin, working version.
+2) Publish early so feedback is concrete.
+3) Build visual tools for non-technical collaborators.
+4) Expect bugs; isolate and patch quickly.
+5) Keep public UX separate from private editing modes.
+6) Treat every change as a small, testable increment.</pre>
+        </section>
+      </div>
+    </section>
+
+    <p class="footer">Built as a standalone Fieldnotes page for learning agentic collaboration patterns.</p>
+  </main>
+
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: {
+      background: '#f9f8f3',
+      primaryColor: '#e5f0ec',
+      primaryBorderColor: '#98bcb3',
+      lineColor: '#52645f',
+      textColor: '#1f1d19',
+      secondaryColor: '#efe9db',
+      tertiaryColor: '#ece6ff'
+    }});
+  </script>
+</body>
+</html>
