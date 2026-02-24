@@ -20,6 +20,7 @@
       --user: #dff2ee;
       --codex: #ece6ff;
       --shadow: rgba(35, 28, 18, 0.12);
+      --pixel: 4px;
     }
 
     * { box-sizing: border-box; }
@@ -47,6 +48,23 @@
       padding: 1rem 1.1rem;
       background: rgba(255, 255, 255, 0.62);
       box-shadow: 0 8px 30px var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "FIELD // LOG";
+      position: absolute;
+      right: 0.9rem;
+      top: 0.8rem;
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      color: #6d665b;
+      border: 1px dashed #c8c1b0;
+      padding: 0.18rem 0.4rem;
+      border-radius: 999px;
+      transform: rotate(-5deg);
+      background: #fffcf1;
     }
 
     .label {
@@ -77,7 +95,24 @@
       box-shadow: 0 14px 40px var(--shadow);
       overflow: hidden;
       margin-top: 1rem;
+      position: relative;
     }
+
+    .terminal::before,
+    .terminal::after {
+      content: "";
+      position: absolute;
+      top: 14px;
+      width: 14px;
+      height: 14px;
+      border: 1px solid #c8c1b0;
+      background: #f8f4e8;
+      transform: rotate(45deg);
+      z-index: 2;
+    }
+
+    .terminal::before { left: -8px; }
+    .terminal::after { right: -8px; }
 
     .terminal-bar {
       display: flex;
@@ -109,10 +144,65 @@
       max-width: 84ch;
       font-size: 0.92rem;
       white-space: pre-wrap;
+      position: relative;
     }
 
     .user { background: var(--user); margin-right: 5rem; }
     .codex { background: var(--codex); margin-left: 5rem; }
+
+    .user::before,
+    .codex::before {
+      content: "";
+      position: absolute;
+      width: var(--pixel);
+      height: var(--pixel);
+      image-rendering: pixelated;
+      top: 10px;
+    }
+
+    .user::before {
+      left: -34px;
+      background: #3f3125;
+      box-shadow:
+        calc(var(--pixel) * 1) 0 #3f3125,
+        calc(var(--pixel) * 2) 0 #3f3125,
+        calc(var(--pixel) * 3) 0 #3f3125,
+        0 calc(var(--pixel) * 1) #3f3125,
+        calc(var(--pixel) * 1) calc(var(--pixel) * 1) #ffd4b1,
+        calc(var(--pixel) * 2) calc(var(--pixel) * 1) #ffd4b1,
+        calc(var(--pixel) * 3) calc(var(--pixel) * 1) #3f3125,
+        0 calc(var(--pixel) * 2) #3f3125,
+        calc(var(--pixel) * 1) calc(var(--pixel) * 2) #ffd4b1,
+        calc(var(--pixel) * 2) calc(var(--pixel) * 2) #2f2b25,
+        calc(var(--pixel) * 3) calc(var(--pixel) * 2) #3f3125,
+        calc(var(--pixel) * 1) calc(var(--pixel) * 3) #4ba7a2,
+        calc(var(--pixel) * 2) calc(var(--pixel) * 3) #4ba7a2,
+        calc(var(--pixel) * 1) calc(var(--pixel) * 4) #4ba7a2,
+        calc(var(--pixel) * 2) calc(var(--pixel) * 4) #4ba7a2;
+    }
+
+    .codex::before {
+      right: -34px;
+      background: #4c5361;
+      box-shadow:
+        calc(var(--pixel) * 1) 0 #4c5361,
+        calc(var(--pixel) * 2) 0 #4c5361,
+        calc(var(--pixel) * 3) 0 #4c5361,
+        0 calc(var(--pixel) * 1) #4c5361,
+        calc(var(--pixel) * 1) calc(var(--pixel) * 1) #9bd4ff,
+        calc(var(--pixel) * 2) calc(var(--pixel) * 1) #9bd4ff,
+        calc(var(--pixel) * 3) calc(var(--pixel) * 1) #4c5361,
+        0 calc(var(--pixel) * 2) #4c5361,
+        calc(var(--pixel) * 1) calc(var(--pixel) * 2) #9bd4ff,
+        calc(var(--pixel) * 2) calc(var(--pixel) * 2) #dff6ff,
+        calc(var(--pixel) * 3) calc(var(--pixel) * 2) #4c5361,
+        0 calc(var(--pixel) * 3) #4c5361,
+        calc(var(--pixel) * 1) calc(var(--pixel) * 3) #4c5361,
+        calc(var(--pixel) * 2) calc(var(--pixel) * 3) #4c5361,
+        calc(var(--pixel) * 3) calc(var(--pixel) * 3) #4c5361,
+        calc(var(--pixel) * 1) calc(var(--pixel) * 4) #96a4b9,
+        calc(var(--pixel) * 2) calc(var(--pixel) * 4) #96a4b9;
+    }
 
     .speaker {
       display: inline-block;
@@ -121,6 +211,7 @@
       letter-spacing: 0.06em;
       text-transform: uppercase;
       color: var(--ink-soft);
+      border-bottom: 1px dotted #bfb8a7;
     }
 
     .panel {
@@ -168,6 +259,8 @@
     @media (max-width: 760px) {
       .user, .codex { margin-left: 0; margin-right: 0; }
       .content { padding: 0.75rem; }
+      .user::before, .codex::before { display: none; }
+      .hero::after { position: static; display: inline-block; margin-top: 0.5rem; }
     }
   </style>
 </head>
