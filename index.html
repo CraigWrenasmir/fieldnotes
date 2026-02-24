@@ -20,7 +20,8 @@
       --user: #dff2ee;
       --codex: #ece6ff;
       --shadow: rgba(35, 28, 18, 0.12);
-      --pixel: 4px;
+      --pixel: 5px;
+      --avatar-offset: 42px;
     }
 
     * { box-sizing: border-box; }
@@ -34,6 +35,28 @@
         linear-gradient(145deg, var(--paper), var(--paper-alt));
       font-family: "IBM Plex Mono", ui-monospace, monospace;
       line-height: 1.45;
+      position: relative;
+    }
+
+    body.mega {
+      --pixel: 6px;
+      --avatar-offset: 54px;
+    }
+
+    body.scanlines::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(43, 37, 29, 0.05) 0px,
+        rgba(43, 37, 29, 0.05) 1px,
+        transparent 1px,
+        transparent 4px
+      );
+      mix-blend-mode: multiply;
     }
 
     .wrap {
@@ -86,6 +109,32 @@
       color: var(--ink-soft);
       max-width: 72ch;
       font-size: 0.92rem;
+    }
+
+    .controls {
+      margin-top: 0.8rem;
+      display: flex;
+      gap: 0.45rem;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      border: 1px solid #c6beac;
+      border-radius: 999px;
+      background: #fffcf1;
+      color: #3b362f;
+      font: inherit;
+      font-size: 0.74rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 0.32rem 0.56rem;
+      cursor: pointer;
+    }
+
+    .chip[aria-pressed="true"] {
+      background: #e6f2ee;
+      border-color: #7fa79d;
+      color: #225148;
     }
 
     .terminal {
@@ -161,7 +210,7 @@
     }
 
     .user::before {
-      left: -34px;
+      left: calc(-1 * var(--avatar-offset));
       background: #3f3125;
       box-shadow:
         calc(var(--pixel) * 1) 0 #3f3125,
@@ -182,7 +231,7 @@
     }
 
     .codex::before {
-      right: -34px;
+      right: calc(-1 * var(--avatar-offset));
       background: #4c5361;
       box-shadow:
         calc(var(--pixel) * 1) 0 #4c5361,
@@ -261,6 +310,7 @@
       .content { padding: 0.75rem; }
       .user::before, .codex::before { display: none; }
       .hero::after { position: static; display: inline-block; margin-top: 0.5rem; }
+      .controls { margin-top: 0.6rem; }
     }
   </style>
 </head>
@@ -270,6 +320,10 @@
       <p class="label">Fieldnotes</p>
       <h1>How A Hand-Drawn Map Became A Public Interactive Archive</h1>
       <p class="sub">A readable user + Codex dialogue showing practical agentic coding: define scope, ship early, adjust through feedback, recover from bugs, and polish for public use.</p>
+      <div class="controls" role="group" aria-label="Display options">
+        <button id="avatarToggle" class="chip" type="button" aria-pressed="false">Avatar: Chunky</button>
+        <button id="scanlineToggle" class="chip" type="button" aria-pressed="false">Scanlines: Off</button>
+      </div>
     </section>
 
     <section class="terminal">
@@ -396,6 +450,21 @@ C->>S: Push final published state</div>
 
   <script type="module">
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+
+    const avatarToggle = document.getElementById('avatarToggle');
+    const scanlineToggle = document.getElementById('scanlineToggle');
+
+    avatarToggle.addEventListener('click', () => {
+      const enabled = document.body.classList.toggle('mega');
+      avatarToggle.setAttribute('aria-pressed', String(enabled));
+      avatarToggle.textContent = enabled ? 'Avatar: Extra Chunky' : 'Avatar: Chunky';
+    });
+
+    scanlineToggle.addEventListener('click', () => {
+      const enabled = document.body.classList.toggle('scanlines');
+      scanlineToggle.setAttribute('aria-pressed', String(enabled));
+      scanlineToggle.textContent = enabled ? 'Scanlines: On' : 'Scanlines: Off';
+    });
     mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: {
       background: '#f9f8f3',
       primaryColor: '#e5f0ec',
