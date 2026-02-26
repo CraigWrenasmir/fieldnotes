@@ -282,11 +282,25 @@
       body { padding: var(--space-3); }
       .panel { padding: var(--space-4); }
       .modes { grid-template-columns: 1fr; }
-      .mode { padding-right: var(--space-3); }
+      .mode {
+        padding-right: var(--space-3);
+        padding-top: var(--space-3);
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: start;
+      }
       .mode-icon {
+        position: static;
         width: 72px;
         height: 72px;
+        grid-column: 2;
+        grid-row: 1 / span 2;
+        margin-left: var(--space-2);
       }
+      .mode-label { grid-column: 1; }
+      .mode h3 { grid-column: 1; }
+      .mode p,
+      .mode ul,
+      .mode a { grid-column: 1 / -1; }
       .intro-row { grid-template-columns: 1fr; }
       .intro-avatar {
         width: 96px;
