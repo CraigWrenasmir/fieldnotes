@@ -297,9 +297,139 @@
       .tracks { grid-template-columns: 1fr; }
       .editor-links { grid-template-columns: 1fr; }
     }
+  
+    /* Site Header */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 90px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--glass-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      z-index: 1000;
+    }
+
+    .site-logo img {
+      height: 70px;
+      width: auto;
+    }
+
+    .menu-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .menu-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--text-dark);
+      transition: all 0.3s;
+    }
+
+    .menu-toggle:hover span {
+      background: var(--lavender-deep);
+    }
+
+    .dropdown-menu {
+      position: fixed;
+      top: 90px;
+      right: 0;
+      width: 280px;
+      max-height: calc(100vh - 90px);
+      overflow-y: auto;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-left: 1px solid var(--glass-border);
+      border-bottom: 1px solid var(--glass-border);
+      box-shadow: -4px 4px 24px var(--glass-shadow);
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      z-index: 999;
+    }
+
+    .dropdown-menu.open {
+      transform: translateX(0);
+    }
+
+    .dropdown-menu .menu-section {
+      font-size: 10px;
+      color: var(--lavender-deep);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 16px 20px 8px 20px;
+      border-bottom: 1px solid var(--glass-border);
+      font-weight: 700;
+    }
+
+    .dropdown-menu a {
+      display: block;
+      padding: 12px 20px;
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+
+    .dropdown-menu a:hover {
+      background: rgba(144, 144, 192, 0.1);
+    }
+
+    .dropdown-menu a.active {
+      background: rgba(144, 144, 192, 0.15);
+      color: var(--lavender-deep);
+      font-weight: 500;
+    }
+
+    body {
+      padding-top: 110px;
+    }
   </style>
 </head>
 <body>
+  <header class="site-header">
+    <a href="https://theuniversalsandpit.org" class="site-logo">
+      <img src="https://images.squarespace-cdn.com/content/v1/596949d003596eea9386ccd8/0c759f32-a3c9-45c4-88ec-39a919d4e8f0/TUS%2BLogo%2BBlack.png?format=500w" alt="The Universal Sandpit" />
+    </a>
+    <button class="menu-toggle" onclick="toggleMenu()" aria-label="Open menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <nav class="dropdown-menu" id="dropdownMenu">
+    <div class="menu-section">For Teachers</div>
+    <a href="https://tools.theuniversalsandpit.org/udl">UDL Lesson Planner</a>
+    <a href="https://tools.theuniversalsandpit.org/vsp">Visual Supports Planner</a>
+    <a href="https://tools.theuniversalsandpit.org/interests">Strengths and Interests</a>
+    <a href="https://tools.theuniversalsandpit.org/task-analysis">Task Analysis</a>
+    <a href="https://tools.theuniversalsandpit.org/chaining">Skill Chaining</a>
+    <a href="https://tools.theuniversalsandpit.org/rubric">Differentiation Levels</a>
+    <a href="https://tools.theuniversalsandpit.org/social-script">Social Script Generator</a>
+    <a href="https://tools.theuniversalsandpit.org/assignments">Assignment Helper</a>
+    <a href="https://tools.theuniversalsandpit.org/reflective-lens">Reflective Lens</a>
+    <div class="menu-section">For Students</div>
+    <a href="https://tools.theuniversalsandpit.org/floating-thoughts">Floating Thoughts</a>
+    <a href="https://tools.theuniversalsandpit.org/first-strings">First Strings</a>
+    <a href="https://tools.theuniversalsandpit.org/pathway">Pathway</a>
+    <a href="https://tools.theuniversalsandpit.org/student">Student Multi-Tool</a>
+    <a href="https://tools.theuniversalsandpit.org/concepts">Concept Explainer</a>
+    <a href="https://tools.theuniversalsandpit.org/spoon-theory">Spoon Theory Planner</a>
+  </nav>
   <main class="page">
     <header class="panel">
       <p class="meta-line">Field.Notes / Foundations</p>
@@ -490,6 +620,20 @@
         });
       });
     })();
+  </script>
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('dropdownMenu');
+      menu.classList.toggle('open');
+    }
+
+    document.addEventListener('click', function(e) {
+      const menu = document.getElementById('dropdownMenu');
+      const toggle = document.querySelector('.menu-toggle');
+      if (menu && toggle && !menu.contains(e.target) && !toggle.contains(e.target)) {
+        menu.classList.remove('open');
+      }
+    });
   </script>
 </body>
 </html>
