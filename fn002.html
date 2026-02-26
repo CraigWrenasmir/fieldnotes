@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FieldNote 002 - UDL 3.0 Planning Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      color-scheme: light;
+      --lavender: #9090c0;
+      --lavender-deep: #6b6b9d;
+      --snes-red: #d64a4a;
+      --snes-yellow: #e8c547;
+      --snes-green: #5ab97a;
+      --snes-blue: #5a7ec2;
+      --text-dark: #2a2a3a;
+      --text-mid: #5a5a6a;
+      --text-light: #8a8a9a;
+      --glass-bg: rgba(255, 255, 255, 0.88);
+      --glass-border: rgba(144, 144, 192, 0.34);
+      --glass-shadow: rgba(107, 107, 157, 0.16);
+      --page-bg: #f6f6fb;
+      --space-1: 8px;
+      --space-2: 12px;
+      --space-3: 16px;
+      --space-4: 24px;
+      --space-5: 32px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Space Mono", monospace;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(144, 144, 192, 0.15), transparent 28%),
+        radial-gradient(circle at 90% 8%, rgba(90, 126, 194, 0.12), transparent 30%),
+        var(--page-bg);
+      color: var(--text-dark);
+      line-height: 1.65;
+      padding: var(--space-4);
+    }
+
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+      display: grid;
+      gap: var(--space-3);
+    }
+
+    .pixel-title {
+      font-family: "Press Start 2P", monospace;
+      font-size: clamp(0.8rem, 2.1vw, 1.15rem);
+      line-height: 1.6;
+      margin: 0;
+      color: var(--lavender-deep);
+      text-transform: uppercase;
+    }
+
+    .section,
+    .meta {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      box-shadow: 0 6px 24px var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section::before,
+    .meta::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 18px;
+      right: 18px;
+      height: 4px;
+      border-radius: 0 0 4px 4px;
+      background: linear-gradient(
+        90deg,
+        var(--snes-red) 0% 25%,
+        var(--snes-yellow) 25% 50%,
+        var(--snes-green) 50% 75%,
+        var(--snes-blue) 75% 100%
+      );
+      opacity: 0.86;
+    }
+
+    .meta {
+      padding: var(--space-4);
+      display: grid;
+      gap: var(--space-3);
+    }
+
+    .meta-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+    }
+
+    .meta-tag {
+      font-size: 12px;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: var(--lavender-deep);
+      font-weight: 700;
+    }
+
+    .avatars {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.85);
+      object-fit: contain;
+      padding: 2px;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-2) var(--space-4);
+    }
+
+    .meta-item dt {
+      margin: 0;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-light);
+    }
+
+    .meta-item dd {
+      margin: 2px 0 0;
+      font-size: 14px;
+      color: var(--text-dark);
+      font-weight: 700;
+    }
+
+    .section {
+      padding: var(--space-4);
+    }
+
+    h2 {
+      margin: 0 0 var(--space-2);
+      font-family: "Press Start 2P", monospace;
+      font-size: clamp(0.72rem, 1.65vw, 0.92rem);
+      line-height: 1.55;
+      color: var(--lavender-deep);
+      text-transform: uppercase;
+    }
+
+    p {
+      margin: 0 0 var(--space-2);
+      font-size: 14px;
+      color: var(--text-mid);
+    }
+
+    p:last-child { margin-bottom: 0; }
+
+    .phase-list,
+    .move-list,
+    .reuse-list {
+      margin: 0;
+      padding-left: 22px;
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    .phase-list li,
+    .reuse-list li {
+      color: var(--text-mid);
+      font-size: 14px;
+    }
+
+    .phase-list strong,
+    .move-list strong {
+      color: var(--text-dark);
+    }
+
+    .dialogue-grid {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+      position: relative;
+    }
+
+    .dialogue-grid::before {
+      content: "";
+      position: absolute;
+      top: 8px;
+      bottom: 8px;
+      left: 50%;
+      width: 2px;
+      transform: translateX(-50%);
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(107, 107, 157, 0.45) 0 10px,
+        rgba(107, 107, 157, 0.08) 10px 20px
+      );
+    }
+
+    .utterance {
+      position: relative;
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.74);
+      padding: 12px 12px 12px 50px;
+      font-size: 13px;
+      color: var(--text-mid);
+      width: calc(50% - 14px);
+    }
+
+    .utterance.craig { justify-self: start; }
+    .utterance.ai {
+      justify-self: end;
+      padding: 12px 50px 12px 12px;
+    }
+
+    .utterance::before {
+      content: "";
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      width: 30px;
+      height: 30px;
+      border-radius: 7px;
+      border: 1px solid var(--glass-border);
+      background-color: rgba(255, 255, 255, 0.8);
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+
+    .utterance.craig::before {
+      background-image: url("assets/Craig_Dialogue_transparent.png");
+    }
+
+    .utterance.ai::before {
+      left: auto;
+      right: 10px;
+      background-image: url("assets/Computer_Dialogue_transparent.png");
+    }
+
+    .utterance strong {
+      color: var(--text-dark);
+      display: block;
+      margin-bottom: 4px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .move-list {
+      list-style: none;
+      padding-left: 0;
+      gap: var(--space-3);
+    }
+
+    .move {
+      border: 1px solid var(--glass-border);
+      border-left: 4px solid var(--snes-green);
+      border-radius: 10px;
+      padding: var(--space-2) var(--space-3);
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    .move p {
+      margin: 0;
+      font-size: 13px;
+    }
+
+    .move p + p { margin-top: 8px; }
+
+    .infra-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-2);
+      margin: 0;
+    }
+
+    .infra-grid div {
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      background: rgba(255, 255, 255, 0.72);
+      font-size: 13px;
+      color: var(--text-mid);
+    }
+
+    .infra-grid strong { color: var(--text-dark); }
+
+    .result-box {
+      border: 1px dashed var(--lavender);
+      border-radius: 10px;
+      padding: var(--space-3);
+      background: rgba(144, 144, 192, 0.08);
+    }
+
+    .result-box a {
+      color: var(--snes-blue);
+      text-decoration-thickness: 2px;
+      text-underline-offset: 2px;
+      word-break: break-word;
+    }
+
+    .screenshot-placeholder {
+      margin-top: var(--space-2);
+      min-height: 160px;
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: var(--text-light);
+      font-size: 13px;
+      background: repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.7),
+        rgba(255, 255, 255, 0.7) 10px,
+        rgba(144, 144, 192, 0.06) 10px,
+        rgba(144, 144, 192, 0.06) 20px
+      );
+    }
+
+    .result-shot {
+      width: 100%;
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      display: block;
+      margin-top: var(--space-2);
+    }
+
+    .home-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      background: var(--lavender);
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      width: fit-content;
+    }
+
+    .home-link:hover,
+    .home-link:focus-visible {
+      background: var(--lavender-deep);
+      outline: none;
+    }
+
+    @media (max-width: 760px) {
+      body { padding: var(--space-3); }
+      .meta,
+      .section { padding: var(--space-3); }
+      .meta-grid,
+      .infra-grid { grid-template-columns: 1fr; }
+      .dialogue-grid::before { display: none; }
+      .utterance,
+      .utterance.ai {
+        width: 100%;
+        justify-self: stretch;
+        padding: 12px 12px 12px 50px;
+      }
+      .utterance.ai::before {
+        left: 10px;
+        right: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="meta" aria-labelledby="fieldnote-title">
+      <div class="meta-top">
+        <p id="fieldnote-title" class="pixel-title">FieldNote 002</p>
+        <div class="avatars" aria-label="Project voices">
+          <img class="avatar" src="assets/Craig_Dialogue_transparent.png" alt="Craig pixel avatar" />
+          <img class="avatar" src="assets/Computer_Dialogue_transparent.png" alt="Computer pixel avatar" />
+        </div>
+      </div>
+      <dl class="meta-grid">
+        <div class="meta-item">
+          <dt>Project Title</dt>
+          <dd>UDL 3.0 Planning Dashboard</dd>
+        </div>
+        <div class="meta-item">
+          <dt>Project Type</dt>
+          <dd>Educational Tool / Interactive Dashboard</dd>
+        </div>
+        <div class="meta-item">
+          <dt>Terrain</dt>
+          <dd>Professional Learning / Early Career Teachers</dd>
+        </div>
+        <div class="meta-item">
+          <dt>Toolchain</dt>
+          <dd>HTML, CSS, JavaScript, AI Agent, GitHub Pages</dd>
+        </div>
+        <div class="meta-item">
+          <dt>Time to Prototype</dt>
+          <dd>~1 focused working session</dd>
+        </div>
+        <div class="meta-item">
+          <dt>Record</dt>
+          <dd>Dialogue distilled into strategic phases</dd>
+        </div>
+      </dl>
+    </header>
+
+    <section class="section" aria-labelledby="result-title">
+      <h2 id="result-title">The Result</h2>
+      <div class="result-box">
+        <p><strong>Public link:</strong> <a href="https://craigwrenasmir.github.io/UDL-Dashboard/" target="_blank" rel="noopener noreferrer">https://craigwrenasmir.github.io/UDL-Dashboard/</a></p>
+        <img
+          class="result-shot"
+          src="assets/udl-dashboard-result.png"
+          alt="Screenshot of the UDL 3.0 Planning Dashboard showing the top-down classroom view"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
+        />
+        <div class="screenshot-placeholder" role="img" aria-label="Screenshot placeholder for UDL Dashboard" style="display:none;">
+          Add screenshot at assets/udl-dashboard-result.png
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="problem-title">
+      <h2 id="problem-title">The Goal</h2>
+      <p>The UDL 3.0 guidelines created by CAST are a powerful framework for inclusive lesson design. They are regularly incorporated into early career Australian teacher training. It would be useful to have a practical dashboard that these educators could sit down with and think through a lesson in dialogue with a mentor.</p>
+      <p>The goal was to turn the UDL domains into an accessible, interactive planning dashboard that felt informative and useful. I also wanted the dashboard to produce an output that educators could copy into their lesson plans or other planning documents (like a Google Doc). Then, I thought, "You know what might be fun and useful? If the output also mapped onto a visual classroom environment". So, that's what we did :)</p>
+    </section>
+
+
+    <section class="section" aria-labelledby="strategy-title">
+      <h2 id="strategy-title">Conversation Strategy</h2>
+      <ol class="phase-list">
+        <li><strong>Define the audience first:</strong> early career Australian teachers and those interested in learning more about UDL. The tool doesn't replace educators using the UDL Guidelines or accessing the CAST website, it's just a way of thinking the elements through, preferably in conversation with a mentor at university or in a school.</li>
+        <li><strong>Get a working tool before refining it:</strong> request the full dashboard structure first, then iterate on language, spelling, and labelling as separate passes.</li>
+        <li><strong>Think about what could be unique and fun:</strong> I knew I wanted a classroom view as part of the output, and it's nice to have these sort of 'joy' elements when creating tools.</li>
+        <li><strong>Describe the vision before asking for code:</strong> for the classroom view, have the design conversation first — agree on zone mapping, interaction model, and visual style — then build.</li>
+        <li><strong>Publish early, refine continuously:</strong> push to GitHub Pages before the tool is finished so every iteration can be seen and shared as a live link.</li>
+      </ol>
+    </section>
+
+    <section class="section" aria-labelledby="dialogue-title">
+      <h2 id="dialogue-title">Dialogue Excerpt</h2>
+      <ul class="dialogue-grid">
+        <li class="utterance craig"><strong>Craig</strong>I want an interactive dashboard tool where teachers can make notes against the UDL 3.0 guidelines for their lesson planning.</li>
+        <li class="utterance ai"><strong>Code AI</strong>I'll build a full dashboard with all nine domains, planning notes per domain, clickable guideline popovers, and a summary function.</li>
+        <li class="utterance craig"><strong>Craig</strong>I'd like the summaries to be written for Australian educators, just two simple sentences per element.</li>
+        <li class="utterance ai"><strong>Code AI</strong>I'll rewrite every summary as two plain sentences in Australian English — helpful and easy to read, no academic hedging.</li>
+        <li class="utterance craig"><strong>Craig</strong>I'm envisaging a little classroom generated at the bottom — a top-down video game classroom — can we talk about it before we make anything?</li>
+        <li class="utterance ai"><strong>Code AI</strong>Yes. Here's a proposed zone mapping: Whiteboard for Perception, Bookshelf for Language and Symbols, Calm Corner for Emotional Capacity. Want me to draft the full nine before we build?</li>
+        <li class="utterance craig"><strong>Craig</strong>Your proposed mapping is excellent. Proceed.</li>
+        <li class="utterance ai"><strong>Code AI</strong>The classroom is built — illustrated zones in HTML and CSS, coloured pins for filled domains, click to expand notes, fully mobile responsive.</li>
+        <li class="utterance craig"><strong>Craig</strong>Can you push this to my GitHub as its own repo, call it UDL-Dashboard?</li>
+        <li class="utterance ai"><strong>Code AI</strong>Done. Repo is live at github.com/CraigWrenasmir/UDL-Dashboard and GitHub Pages is enabled — you have a shareable link.</li>
+        <li class="utterance craig"><strong>Craig</strong>My pixel art icon didn't make it online, it isn't working.</li>
+        <li class="utterance ai"><strong>Code AI</strong>The image was only on your local machine. I've copied it into the repo under assets/ and updated both references — pushing now.</li>
+        <li class="utterance craig"><strong>Craig</strong>This is great. The classroom visual map is especially nice, I'll think about this more and test it with educators.</li>
+        <li class="utterance ai"><strong>Code AI</strong>The idea of mapping UDL domains to physical classroom spaces is a natural fit — it makes the framework feel alive rather than like a checklist.</li>
+      </ul>
+    </section>
+
+    <section class="section" aria-labelledby="turning-title">
+      <h2 id="turning-title">Turning Point Moves</h2>
+      <ul class="move-list">
+        <li class="move">
+          <p><strong>Prompt Move:</strong> Name the audience explicitly and early — "I'm an Australian educator."</p>
+          <p><strong>Why It Mattered:</strong> Anchored every language and tone decision to a specific person rather than a generic user, making the rewrites genuinely useful rather than cosmetically different.</p>
+        </li>
+        <li class="move">
+          <p><strong>Prompt Move:</strong> Ask to talk through the design before building the classroom view.</p>
+          <p><strong>Why It Mattered:</strong> Prevented the agent from making arbitrary layout and mapping decisions alone. A five-minute design conversation produced a zone mapping that felt considered and pedagogically coherent.</p>
+        </li>
+        <li class="move">
+          <p><strong>Prompt Move:</strong> Treat language localisation as a dedicated pass, not an afterthought.</p>
+          <p><strong>Why It Mattered:</strong> Rewriting thirty-plus summaries in one focused step was faster and more consistent than scattering corrections across multiple prompts.</p>
+        </li>
+        <li class="move">
+          <p><strong>Prompt Move:</strong> Request GitHub Pages deployment as part of the build, not after.</p>
+          <p><strong>Why It Mattered:</strong> Having a live public link from the first session made sharing and feedback immediate — the tool became real, not just a local file.</p>
+        </li>
+        <li class="move">
+          <p><strong>Prompt Move:</strong> Give clear confirmation when a proposal is right — "Your mapping is excellent. Proceed."</p>
+          <p><strong>Why It Mattered:</strong> Explicit sign-off after a design conversation avoids ambiguity and lets the agent build with confidence rather than second-guessing intent mid-way through.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="section" aria-labelledby="infra-title">
+      <h2 id="infra-title">Infrastructure Notes</h2>
+      <div class="infra-grid">
+        <div><strong>File Structure:</strong> two-file app — index.html for the full dashboard, udl-guidelines-summaries.js for all popover content — kept separate for safe editing.</div>
+        <div><strong>Draft Persistence:</strong> planning notes auto-save to browser localStorage so teachers can return to a lesson in progress without losing work.</div>
+        <div><strong>Hosting:</strong> GitHub Pages for public delivery, shareable link from day one.</div>
+        <div><strong>Deployment Workflow:</strong> local edits, commit, push to main, automatic Pages refresh within minutes.</div>
+        <div><strong>Asset Management:</strong> avatar images and any screenshots stored in assets/ folder inside the repo — no external dependencies.</div>
+        <div><strong>Maintenance Pattern:</strong> summaries and guideline labels live in a single JS file — language updates never require touching the dashboard logic.</div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="pattern-title">
+      <h2 id="pattern-title">Reusable Pattern</h2>
+      <p><strong>You could use this pattern to…</strong></p>
+      <ul class="reuse-list">
+        <li>build interactive planning tools around any teaching framework — Bloom's Taxonomy, Visible Learning, the Australian Professional Standards.</li>
+        <li>create visual metaphors for abstract frameworks — a classroom, a school building, a curriculum map — to make structure feel intuitive.</li>
+        <li>give early career teachers a scaffold they can fill in rather than a document they have to write from scratch.</li>
+        <li>publish professional learning tools as live, shareable links rather than PDFs that go out of date.</li>
+      </ul>
+    </section>
+
+    <a class="home-link" href="index.html" aria-label="Back to Field.Notes home">Back to Home &#8594;</a>
+  </main>
+</body>
+</html>

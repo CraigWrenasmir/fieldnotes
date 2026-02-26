@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FieldNote 004 - Floating Thoughts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      color-scheme: light;
+      --lavender: #9090c0;
+      --lavender-deep: #6b6b9d;
+      --snes-red: #d64a4a;
+      --snes-yellow: #e8c547;
+      --snes-green: #5ab97a;
+      --snes-blue: #5a7ec2;
+      --text-dark: #2a2a3a;
+      --text-mid: #5a5a6a;
+      --text-light: #8a8a9a;
+      --glass-bg: rgba(255, 255, 255, 0.88);
+      --glass-border: rgba(144, 144, 192, 0.34);
+      --glass-shadow: rgba(107, 107, 157, 0.16);
+      --page-bg: #f6f6fb;
+      --space-1: 8px;
+      --space-2: 12px;
+      --space-3: 16px;
+      --space-4: 24px;
+      --space-5: 32px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Space Mono", monospace;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(144, 144, 192, 0.15), transparent 28%),
+        radial-gradient(circle at 90% 8%, rgba(90, 126, 194, 0.12), transparent 30%),
+        var(--page-bg);
+      color: var(--text-dark);
+      line-height: 1.65;
+      padding: var(--space-4);
+    }
+
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+      display: grid;
+      gap: var(--space-3);
+    }
+
+    .pixel-title {
+      font-family: "Press Start 2P", monospace;
+      font-size: clamp(0.8rem, 2.1vw, 1.15rem);
+      line-height: 1.6;
+      margin: 0;
+      color: var(--lavender-deep);
+      text-transform: uppercase;
+    }
+
+    .section,
+    .meta {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      box-shadow: 0 6px 24px var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section::before,
+    .meta::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 18px;
+      right: 18px;
+      height: 4px;
+      border-radius: 0 0 4px 4px;
+      background: linear-gradient(
+        90deg,
+        var(--snes-red) 0% 25%,
+        var(--snes-yellow) 25% 50%,
+        var(--snes-green) 50% 75%,
+        var(--snes-blue) 75% 100%
+      );
+      opacity: 0.86;
+    }
+
+    .meta {
+      padding: var(--space-4);
+      display: grid;
+      gap: var(--space-3);
+    }
+
+    .meta-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+    }
+
+    .meta-tag {
+      font-size: 12px;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: var(--lavender-deep);
+      font-weight: 700;
+    }
+
+    .avatars {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.85);
+      object-fit: contain;
+      padding: 2px;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-2) var(--space-4);
+    }
+
+    .meta-item dt {
+      margin: 0;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-light);
+    }
+
+    .meta-item dd {
+      margin: 2px 0 0;
+      font-size: 14px;
+      color: var(--text-dark);
+      font-weight: 700;
+    }
+
+    .section {
+      padding: var(--space-4);
+    }
+
+    h2 {
+      margin: 0 0 var(--space-2);
+      font-family: "Press Start 2P", monospace;
+      font-size: clamp(0.72rem, 1.65vw, 0.92rem);
+      line-height: 1.55;
+      color: var(--lavender-deep);
+      text-transform: uppercase;
+    }
+
+    p {
+      margin: 0 0 var(--space-2);
+      font-size: 14px;
+      color: var(--text-mid);
+    }
+
+    p:last-child { margin-bottom: 0; }
+
+    .phase-list,
+    .move-list,
+    .reuse-list {
+      margin: 0;
+      padding-left: 22px;
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    .phase-list li,
+    .reuse-list li {
+      color: var(--text-mid);
+      font-size: 14px;
+    }
+
+    .phase-list strong,
+    .move-list strong {
+      color: var(--text-dark);
+    }
+
+    .dialogue-grid {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+      position: relative;
+    }
+
+    .dialogue-grid::before {
+      content: "";
+      position: absolute;
+      top: 8px;
+      bottom: 8px;
+      left: 50%;
+      width: 2px;
+      transform: translateX(-50%);
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(107, 107, 157, 0.45) 0 10px,
+        rgba(107, 107, 157, 0.08) 10px 20px
+      );
+    }
+
+    .utterance {
+      position: relative;
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.74);
+      padding: 12px 12px 12px 50px;
+      font-size: 13px;
+      color: var(--text-mid);
+      width: calc(50% - 14px);
+    }
+
+    .utterance.craig { justify-self: start; }
+    .utterance.ai {
+      justify-self: end;
+      padding: 12px 50px 12px 12px;
+    }
+
+    .utterance::before {
+      content: "";
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      width: 30px;
+      height: 30px;
+      border-radius: 7px;
+      border: 1px solid var(--glass-border);
+      background-color: rgba(255, 255, 255, 0.8);
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+
+    .utterance.craig::before {
+      background-image: url("assets/Craig_Dialogue_transparent.png");
+    }
+
+    .utterance.ai::before {
+      left: auto;
+      right: 10px;
+      background-image: url("assets/Computer_Dialogue_transparent.png");
+    }
+
+    .utterance strong {
+      color: var(--text-dark);
+      display: block;
+      margin-bottom: 4px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .move-list {
+      list-style: none;
+      padding-left: 0;
+      gap: var(--space-3);
+    }
+
+    .move {
+      border: 1px solid var(--glass-border);
+      border-left: 4px solid var(--snes-green);
+      border-radius: 10px;
+      padding: var(--space-2) var(--space-3);
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    .move p {
+      margin: 0;
+      font-size: 13px;
+    }
+
+    .move p + p { margin-top: 8px; }
+
+    .infra-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-2);
+      margin: 0;
+    }
+
+    .infra-grid div {
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      background: rgba(255, 255, 255, 0.72);
+      font-size: 13px;
+      color: var(--text-mid);
+    }
+
+    .infra-grid strong { color: var(--text-dark); }
+
+    .result-box {
+      border: 1px dashed var(--lavender);
+      border-radius: 10px;
+      padding: var(--space-3);
+      background: rgba(144, 144, 192, 0.08);
+    }
+
+    .result-box a {
+      color: var(--snes-blue);
+      text-decoration-thickness: 2px;
+      text-underline-offset: 2px;
+      word-break: break-word;
+    }
+
+    .screenshot-placeholder {
+      margin-top: var(--space-2);
+      min-height: 160px;
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: var(--text-light);
+      font-size: 13px;
+      background: repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.7),
+        rgba(255, 255, 255, 0.7) 10px,
+        rgba(144, 144, 192, 0.06) 10px,
+        rgba(144, 144, 192, 0.06) 20px
+      );
+    }
+
+    .result-shot {
+      width: 100%;
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      display: block;
+      margin-top: var(--space-2);
+    }
+
+    .home-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      background: var(--lavender);
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      width: fit-content;
+    }
+
+    .home-link:hover,
+    .home-link:focus-visible {
+      background: var(--lavender-deep);
+      outline: none;
+    }
+
+    @media (max-width: 760px) {
+      body { padding: var(--space-3); }
+      .meta,
+      .section { padding: var(--space-3); }
+      .meta-grid,
+      .infra-grid { grid-template-columns: 1fr; }
+      .dialogue-grid::before { display: none; }
+      .utterance,
+      .utterance.ai {
+        width: 100%;
+        justify-self: stretch;
+        padding: 12px 12px 12px 50px;
+      }
+      .utterance.ai::before {
+        left: 10px;
+        right: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="meta" aria-labelledby="fieldnote-title">
+      <div class="meta-top">
+        <p id="fieldnote-title" class="pixel-title">FieldNote 004</p>
+        <div class="avatars" aria-label="Project voices">
+          <img class="avatar" src="assets/Craig_Dialogue_transparent.png" alt="Craig pixel avatar" />
+          <img class="avatar" src="assets/Computer_Dialogue_transparent.png" alt="Computer pixel avatar" />
+        </div>
+      </div>
+      <dl class="meta-grid">
+        <div class="meta-item">
+          <dt>Project Title</dt>
+          <dd>Floating Thoughts</dd>
+        </div>
+        <div class="meta-item">
+          <dt>Project Type</dt>
+          <dd>Student Learning Tool / Task Chunking Workflow</dd>
+        </div>
+        <div class="meta-item">
+          <dt>Terrain</dt>
+          <dd>Executive Functioning / Classroom and Homework Support</dd>
+        </div>
+        <div class="meta-item">
+          <dt>Toolchain</dt>
+          <dd>HTML, CSS, JavaScript, AI Chunking Endpoint, Web Deployment</dd>
+        </div>
+        <div class="meta-item">
+          <dt>Time to Prototype</dt>
+          <dd>~1 focused working session</dd>
+        </div>
+        <div class="meta-item">
+          <dt>Record</dt>
+          <dd>Live tool behaviour distilled into reusable design moves</dd>
+        </div>
+      </dl>
+    </header>
+
+    <section class="section" aria-labelledby="result-title">
+      <h2 id="result-title">The Result</h2>
+      <div class="result-box">
+        <p><strong>Public link:</strong> <a href="https://tools.theuniversalsandpit.org/floating-thoughts" target="_blank" rel="noopener noreferrer">https://tools.theuniversalsandpit.org/floating-thoughts</a></p>
+        <img
+          class="result-shot"
+          src="assets/floating-thoughts-result.png"
+          alt="Screenshot of Floating Thoughts showing draggable task chunk cards"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
+        />
+        <div class="screenshot-placeholder" role="img" aria-label="Screenshot placeholder for Floating Thoughts" style="display:none;">
+          Add screenshot at assets/floating-thoughts-result.png
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="problem-title">
+      <h2 id="problem-title">The Goal</h2>
+      <p>Many students can explain what they need to do, but still feel blocked when a task is large and unstructured. The challenge is turning that "big blur" into manageable steps without adding more stress.</p>
+      <p>Floating Thoughts was built to convert one task description into practical chunks, then let students reorder and colour-code those chunks in the sequence that works for their own thinking style.</p>
+    </section>
+
+    <section class="section" aria-labelledby="strategy-title">
+      <h2 id="strategy-title">Conversation Strategy</h2>
+      <ol class="phase-list">
+        <li><strong>Start from student friction:</strong> focus on initiation barriers and overwhelm, not just productivity.</li>
+        <li><strong>Design a simple first flow:</strong> describe task or upload file, click one action button, receive immediate chunks.</li>
+        <li><strong>Prioritise reorganisation:</strong> make every chunk draggable so students can build their own order of operations.</li>
+        <li><strong>Add lightweight categorisation:</strong> include colour dots for quick visual grouping without forcing rigid labels.</li>
+        <li><strong>Close the loop with export:</strong> generate a clean numbered output and copy it to clipboard for next-step use.</li>
+      </ol>
+    </section>
+
+    <section class="section" aria-labelledby="dialogue-title">
+      <h2 id="dialogue-title">Dialogue Excerpt</h2>
+      <ul class="dialogue-grid">
+        <li class="utterance craig"><strong>Craig</strong>I want students to break down a big task quickly, especially when they feel stuck at the start.</li>
+        <li class="utterance ai"><strong>Code AI</strong>I will add a single input panel where they describe the task and click one button to chunk it.</li>
+        <li class="utterance craig"><strong>Craig</strong>Some students will bring a rubric or assignment sheet, not just typed text.</li>
+        <li class="utterance ai"><strong>Code AI</strong>I will support file attachment so they can upload and still work from one interface.</li>
+        <li class="utterance craig"><strong>Craig</strong>They need to move steps around in their own order, not keep an AI default sequence.</li>
+        <li class="utterance ai"><strong>Code AI</strong>I will make each chunk a draggable card with desktop and mobile interactions.</li>
+        <li class="utterance craig"><strong>Craig</strong>Could they mark priority or type of step visually?</li>
+        <li class="utterance ai"><strong>Code AI</strong>I will add colour dots for categorising each card while keeping the workflow lightweight.</li>
+        <li class="utterance craig"><strong>Craig</strong>Once they are done, they should be able to take the plan into another document instantly.</li>
+        <li class="utterance ai"><strong>Code AI</strong>I will generate a numbered output and include one-click copy to clipboard.</li>
+      </ul>
+    </section>
+
+    <section class="section" aria-labelledby="turning-title">
+      <h2 id="turning-title">Turning Point Moves</h2>
+      <ul class="move-list">
+        <li class="move">
+          <p><strong>Prompt Move:</strong> Define the problem as executive-function load, not missing motivation.</p>
+          <p><strong>Why It Mattered:</strong> Kept the tool compassionate and support-oriented instead of compliance-oriented.</p>
+        </li>
+        <li class="move">
+          <p><strong>Prompt Move:</strong> Keep the entry action to one clear button: "Break It Down."</p>
+          <p><strong>Why It Mattered:</strong> Reduced startup friction for students already feeling task overwhelm.</p>
+        </li>
+        <li class="move">
+          <p><strong>Prompt Move:</strong> Require draggable chunks as a core interaction, not a future enhancement.</p>
+          <p><strong>Why It Mattered:</strong> Shifted control from tool output to student agency.</p>
+        </li>
+        <li class="move">
+          <p><strong>Prompt Move:</strong> Add optional colour coding rather than mandatory categorisation fields.</p>
+          <p><strong>Why It Mattered:</strong> Preserved flexibility while still supporting visual organisation patterns.</p>
+        </li>
+        <li class="move">
+          <p><strong>Prompt Move:</strong> Include immediate export and copy flow.</p>
+          <p><strong>Why It Mattered:</strong> Made the output portable into class notes, planners, and support documents.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="section" aria-labelledby="infra-title">
+      <h2 id="infra-title">Infrastructure Notes</h2>
+      <div class="infra-grid">
+        <div><strong>Input Paths:</strong> task text field plus file attachment support for .txt, .pdf, .doc, and .docx inputs.</div>
+        <div><strong>Chunking Endpoint:</strong> POST request to <code>/floating-thoughts/chunk-task</code> returning a list of chunks.</div>
+        <div><strong>Interaction Model:</strong> draggable thought cards with both desktop drag events and touch handlers for mobile.</div>
+        <div><strong>State Handling:</strong> chunk order and card colours stored in-memory and re-rendered after each interaction.</div>
+        <div><strong>Output Flow:</strong> generated numbered plan panel with clipboard copy action and fallback copy support.</div>
+        <div><strong>Maintenance Pattern:</strong> iterative UI patches around one-page app architecture.</div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="pattern-title">
+      <h2 id="pattern-title">Reusable Pattern</h2>
+      <p><strong>You could use this pattern to…</strong></p>
+      <ul class="reuse-list">
+        <li>build student-facing "task unblocking" tools for assignments, projects, and exam preparation.</li>
+        <li>convert teacher rubrics into chunked student action plans with reordering control.</li>
+        <li>support neurodivergent learners with visual chunking and flexible sequencing workflows.</li>
+        <li>create lightweight planning assistants that export clean text into school LMS or docs.</li>
+      </ul>
+    </section>
+
+    <a class="home-link" href="index.html" aria-label="Back to Field.Notes home">Back to Home &#8594;</a>
+  </main>
+</body>
+</html>

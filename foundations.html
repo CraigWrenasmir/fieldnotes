@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Field.Notes Foundations | Agent Tool Setup for Educators</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      color-scheme: light;
+      --lavender: #9090c0;
+      --lavender-deep: #6b6b9d;
+      --snes-red: #d64a4a;
+      --snes-yellow: #e8c547;
+      --snes-green: #5ab97a;
+      --snes-blue: #5a7ec2;
+      --text-dark: #2a2a3a;
+      --text-mid: #5a5a6a;
+      --text-light: #8a8a9a;
+      --glass-bg: rgba(255, 255, 255, 0.88);
+      --glass-border: rgba(144, 144, 192, 0.3);
+      --glass-shadow: rgba(107, 107, 157, 0.15);
+      --page-bg: #f6f6fb;
+      --space-1: 8px;
+      --space-2: 12px;
+      --space-3: 16px;
+      --space-4: 24px;
+      --space-5: 32px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: var(--space-4);
+      font-family: "Space Mono", monospace;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(144, 144, 192, 0.18), transparent 28%),
+        radial-gradient(circle at 88% 10%, rgba(90, 126, 194, 0.12), transparent 28%),
+        var(--page-bg);
+      color: var(--text-dark);
+      line-height: 1.62;
+    }
+
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+      display: grid;
+      gap: var(--space-3);
+    }
+
+    .panel {
+      position: relative;
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      background: var(--glass-bg);
+      box-shadow: 0 6px 24px var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+      padding: var(--space-5);
+      overflow: hidden;
+    }
+
+    .panel::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 18px;
+      right: 18px;
+      height: 4px;
+      border-radius: 0 0 4px 4px;
+      background: linear-gradient(90deg, var(--snes-red) 0% 25%, var(--snes-yellow) 25% 50%, var(--snes-green) 50% 75%, var(--snes-blue) 75% 100%);
+      opacity: 0.82;
+    }
+
+    .meta-line {
+      margin: 0 0 var(--space-2);
+      font-size: 11px;
+      color: var(--lavender-deep);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-weight: 700;
+    }
+
+    h1,
+    h2 {
+      margin: 0;
+      font-family: "Press Start 2P", monospace;
+      color: var(--lavender-deep);
+      text-transform: uppercase;
+      line-height: 1.55;
+    }
+
+    h1 {
+      font-size: clamp(0.92rem, 2.2vw, 1.2rem);
+      margin-bottom: var(--space-2);
+    }
+
+    h2 {
+      font-size: clamp(0.72rem, 1.7vw, 0.9rem);
+      margin-bottom: var(--space-2);
+    }
+
+    p {
+      margin: 0 0 var(--space-2);
+      color: var(--text-mid);
+      font-size: 14px;
+    }
+
+    p:last-child { margin-bottom: 0; }
+
+    .subtitle {
+      margin: 0;
+      color: var(--text-dark);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .steps {
+      margin: 0;
+      padding-left: 20px;
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    .steps li { color: var(--text-mid); font-size: 14px; }
+
+    .steps strong { color: var(--text-dark); }
+
+    .links {
+      display: grid;
+      gap: 8px;
+      margin-top: var(--space-2);
+    }
+
+    a {
+      color: var(--snes-blue);
+      text-decoration-thickness: 2px;
+      text-underline-offset: 2px;
+      word-break: break-word;
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-2);
+    }
+
+    .why-item {
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      background: rgba(255, 255, 255, 0.72);
+      font-size: 13px;
+      color: var(--text-mid);
+    }
+
+    .why-item strong { color: var(--text-dark); }
+
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-2);
+    }
+
+    .tool-card {
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      background: rgba(255, 255, 255, 0.72);
+      font-size: 13px;
+      color: var(--text-mid);
+    }
+
+    .tool-card strong { color: var(--text-dark); }
+
+    .sub-block {
+      margin-top: var(--space-3);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.72);
+      padding: var(--space-3);
+    }
+
+    .sub-block h3 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      color: var(--text-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .sub-block p {
+      margin: 0 0 10px;
+      font-size: 13px;
+    }
+
+    .editor-links {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px 12px;
+    }
+
+    .tracks {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-2);
+    }
+
+    .track {
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      padding: var(--space-3);
+      background: rgba(255, 255, 255, 0.75);
+    }
+
+    .track h3 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      color: var(--text-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .track p {
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .checklist {
+      margin: 0;
+      padding-left: 0;
+      list-style: none;
+      display: grid;
+      gap: 8px;
+    }
+
+    .checklist li {
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.74);
+      padding: 9px 12px;
+      font-size: 13px;
+      color: var(--text-mid);
+    }
+
+    .check-item {
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      gap: 10px;
+      align-items: start;
+      cursor: pointer;
+    }
+
+    .check-item input[type="checkbox"] {
+      margin-top: 2px;
+      accent-color: var(--lavender-deep);
+      width: 16px;
+      height: 16px;
+    }
+
+    .check-item-text.done {
+      color: var(--text-light);
+      text-decoration: line-through;
+      text-decoration-thickness: 1px;
+    }
+
+    .nav-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: var(--space-2);
+    }
+
+    .button-link {
+      display: inline-block;
+      text-decoration: none;
+      background: var(--lavender);
+      color: #fff;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .button-link:hover,
+    .button-link:focus-visible {
+      background: var(--lavender-deep);
+      outline: none;
+    }
+
+    @media (max-width: 840px) {
+      body { padding: var(--space-3); }
+      .panel { padding: var(--space-4); }
+      .why-grid { grid-template-columns: 1fr; }
+      .tool-grid,
+      .tracks { grid-template-columns: 1fr; }
+      .editor-links { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="panel">
+      <p class="meta-line">Field.Notes / Foundations</p>
+      <h1>Foundations for Agentic Classroom Tools</h1>
+      <p class="subtitle">A simple setup guide for teachers who want to build and publish practical tools.</p>
+      <p>
+        This page covers the minimum setup to start building with coding agents responsibly: core tools, version control, and publishing.
+        You do not need every platform. Choose one path first, then expand if useful.
+      </p>
+      <p>
+        <strong>Important:</strong> this guide is mainly for teachers who want to share projects online. If you only want to build and use tools on your own device, GitHub is optional. You can easily test your own projects on your computer without sharing things on GitHub. But, it's good to know how to use GitHub, because sharing is caring (and fun) :)
+      </p>
+      <div class="nav-row">
+        <a class="button-link" href="index.html">Back to Home</a>
+        <a class="button-link" href="fn001.html">View a Full Field.Note</a>
+      </div>
+    </header>
+
+    <section class="panel" aria-labelledby="overview-title">
+      <h2 id="overview-title">0. What Is This All About?</h2>
+      <p>This is a practical loop for building and sharing small education tools with agentic coding.</p>
+      <ol class="steps">
+        <li>Use a code editor to talk with an AI agent tool.</li>
+        <li>Explore a project idea through dialogue with your agent tool.</li>
+        <li>Test the project on your computer in a web browser.</li>
+        <li>Push the project to GitHub to share online with others.</li>
+      </ol>
+    </section>
+
+    <section class="panel" aria-labelledby="choices-title">
+      <h2 id="choices-title">1. Choose Your Tool Path (Options, Not Requirements)</h2>
+      <p>
+        Think of these as pathways. Most teachers start with one agent platform.
+        Add GitHub when you are ready to publish online, collaborate, or keep version history in the cloud.
+      </p>
+      <div class="tracks">
+        <article class="track">
+          <h3>Option A: Claude Route</h3>
+          <p>Use Claude Code with GitHub for version control and publishing.</p>
+        </article>
+        <article class="track">
+          <h3>Option B: OpenAI Route</h3>
+          <p>Use Codex tooling with GitHub for version control and publishing.</p>
+        </article>
+      </div>
+      <div class="links">
+        <a href="https://docs.anthropic.com/en/docs/claude-code/setup" target="_blank" rel="noopener noreferrer">Claude Code setup</a>
+        <a href="https://openai.com/codex/" target="_blank" rel="noopener noreferrer">OpenAI Codex overview</a>
+        <a href="https://github.com/openai/codex" target="_blank" rel="noopener noreferrer">OpenAI Codex CLI setup and docs</a>
+        <a href="https://docs.github.com/en/get-started/onboarding/getting-started-with-your-github-account" target="_blank" rel="noopener noreferrer">GitHub account setup</a>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="basics-title">
+      <h2 id="basics-title">2. Plain-Language Basics</h2>
+      <div class="tool-grid">
+        <div class="tool-card"><strong>Terminal:</strong> A text-based window where you run commands to create folders, run tools, and publish projects.</div>
+        <div class="tool-card"><strong>Code Editor:</strong> The app where you view and edit files (for example, VS Code, Cursor, Zed, Sublime Text).</div>
+        <div class="tool-card"><strong>Git CLI:</strong> The Git command-line interface in Terminal (for example, <code>git add</code>, <code>git commit</code>, <code>git push</code>).</div>
+      </div>
+      <div class="links">
+        <a href="https://docs.github.com/en/get-started/using-git/about-git" target="_blank" rel="noopener noreferrer">What Git is (GitHub Docs)</a>
+        <a href="https://docs.github.com/en/get-started/using-git/about-git#command-line" target="_blank" rel="noopener noreferrer">Using Git from the command line (GitHub Docs)</a>
+      </div>
+
+      <section class="sub-block" aria-labelledby="editor-options-title">
+        <h3 id="editor-options-title">Code Editor Options</h3>
+        <p>Any editor is fine. Pick one that feels clear and comfortable, then stay consistent while learning.</p>
+        <div class="editor-links">
+          <a href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer">Visual Studio Code</a>
+          <a href="https://cursor.com/" target="_blank" rel="noopener noreferrer">Cursor</a>
+          <a href="https://zed.dev/" target="_blank" rel="noopener noreferrer">Zed</a>
+          <a href="https://www.sublimetext.com/" target="_blank" rel="noopener noreferrer">Sublime Text</a>
+        </div>
+      </section>
+
+      <section class="sub-block" aria-labelledby="terminal-links-title">
+        <h3 id="terminal-links-title">Terminal Guides (Mac and Windows)</h3>
+        <p>Terminal on Mac is equivalent to using Windows Terminal / PowerShell on Windows. Same idea: run commands directly.</p>
+        <div class="editor-links">
+          <a href="https://support.apple.com/guide/terminal/welcome/mac" target="_blank" rel="noopener noreferrer">Terminal User Guide (macOS)</a>
+          <a href="https://learn.microsoft.com/windows/terminal/" target="_blank" rel="noopener noreferrer">Windows Terminal Documentation</a>
+          <a href="https://learn.microsoft.com/powershell/" target="_blank" rel="noopener noreferrer">PowerShell Documentation</a>
+          <a href="https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands" target="_blank" rel="noopener noreferrer">Windows Command Line Reference</a>
+        </div>
+      </section>
+    </section>
+
+    <section class="panel" aria-labelledby="build-title">
+      <h2 id="build-title">3. Build Path (Start Here)</h2>
+      <ol class="steps">
+        <li>Install a code editor and Git.</li>
+        <li>Create one GitHub repository for your first project.</li>
+        <li>Choose one agent tool path: Codex <em>or</em> Claude Code.</li>
+        <li>Build a tiny page first, then commit and push.</li>
+        <li>Publish via GitHub Pages and test on a second device.</li>
+      </ol>
+      <div class="links">
+        <a href="https://docs.github.com/en/get-started/quickstart/hello-world" target="_blank" rel="noopener noreferrer">GitHub basic workflow (repo, commit, push)</a>
+        <a href="https://docs.github.com/en/pages/quickstart" target="_blank" rel="noopener noreferrer">GitHub Pages quickstart</a>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="github-title">
+      <h2 id="github-title">4. Why GitHub Matters for Educators</h2>
+      <div class="why-grid">
+        <div class="why-item"><strong>Version history:</strong> you can always roll back when an experiment fails.</div>
+        <div class="why-item"><strong>Collaboration:</strong> others can review, improve, and reuse your tools.</div>
+        <div class="why-item"><strong>Transparency:</strong> every change is visible and attributable.</div>
+        <div class="why-item"><strong>Publishing:</strong> GitHub Pages lets you share practical tools with staff, students, and community.</div>
+      </div>
+      <div class="links">
+        <a href="https://docs.github.com/en/pages/quickstart" target="_blank" rel="noopener noreferrer">GitHub Pages quickstart</a>
+        <a href="https://docs.github.com/en/get-started/quickstart/hello-world" target="_blank" rel="noopener noreferrer">GitHub workflow basics (repo, branch, commit, pull request)</a>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="flow-title">
+      <h2 id="flow-title">5. Simple Publish Workflow</h2>
+      <ol class="steps">
+        <li>Create a repository for your project.</li>
+        <li>Build locally with a small first version.</li>
+        <li>Commit changes frequently with clear messages.</li>
+        <li>Push to GitHub and enable Pages deployment.</li>
+        <li>Share the URL and iterate based on real use.</li>
+      </ol>
+    </section>
+
+    <section class="panel" aria-labelledby="check-title">
+      <h2 id="check-title">Quick Readiness Checklist</h2>
+      <ul class="checklist">
+        <li>
+          <label class="check-item">
+            <input type="checkbox" data-check-id="foundations_terminal_basics" />
+            <span class="check-item-text">I chose at least one agent tool (Claude Code, OpenAI Codex) to begin with.</span>
+          </label>
+        </li>
+        <li>
+          <label class="check-item">
+            <input type="checkbox" data-check-id="foundations_github_setup" />
+            <span class="check-item-text">I have GitHub set up for project history and publishing.</span>
+          </label>
+        </li>
+        <li>
+          <label class="check-item">
+            <input type="checkbox" data-check-id="foundations_tool_path" />
+            <span class="check-item-text">I have a small project in mind to start with.</span>
+          </label>
+        </li>
+        <li>
+          <label class="check-item">
+            <input type="checkbox" data-check-id="foundations_git_commands" />
+            <span class="check-item-text">I can use Terminal or a Code Editor tool.</span>
+          </label>
+        </li>
+        <li>
+          <label class="check-item">
+            <input type="checkbox" data-check-id="foundations_review_ai_edits" />
+            <span class="check-item-text">I can talk with my agent tool in my code editor.</span>
+          </label>
+        </li>
+        <li>
+          <label class="check-item">
+            <input type="checkbox" data-check-id="foundations_publish_pages" />
+            <span class="check-item-text">I can push to GitHub and publish with Pages.</span>
+          </label>
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      const keyPrefix = "fieldnotes_check_";
+      const boxes = document.querySelectorAll("input[type='checkbox'][data-check-id]");
+
+      boxes.forEach((box) => {
+        const id = box.getAttribute("data-check-id");
+        const labelText = box.closest(".check-item")?.querySelector(".check-item-text");
+        const stored = localStorage.getItem(keyPrefix + id) === "1";
+
+        box.checked = stored;
+        if (stored && labelText) labelText.classList.add("done");
+
+        box.addEventListener("change", () => {
+          localStorage.setItem(keyPrefix + id, box.checked ? "1" : "0");
+          if (labelText) labelText.classList.toggle("done", box.checked);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

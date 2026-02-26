@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FieldNote 003 - Back to School 2026 Visual Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      color-scheme: light;
+      --lavender: #9090c0;
+      --lavender-deep: #6b6b9d;
+      --snes-red: #d64a4a;
+      --snes-yellow: #e8c547;
+      --snes-green: #5ab97a;
+      --snes-blue: #5a7ec2;
+      --text-dark: #2a2a3a;
+      --text-mid: #5a5a6a;
+      --text-light: #8a8a9a;
+      --glass-bg: rgba(255, 255, 255, 0.88);
+      --glass-border: rgba(144, 144, 192, 0.34);
+      --glass-shadow: rgba(107, 107, 157, 0.16);
+      --page-bg: #f6f6fb;
+      --space-1: 8px;
+      --space-2: 12px;
+      --space-3: 16px;
+      --space-4: 24px;
+      --space-5: 32px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Space Mono", monospace;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(144, 144, 192, 0.15), transparent 28%),
+        radial-gradient(circle at 90% 8%, rgba(90, 126, 194, 0.12), transparent 30%),
+        var(--page-bg);
+      color: var(--text-dark);
+      line-height: 1.65;
+      padding: var(--space-4);
+    }
+
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+      display: grid;
+      gap: var(--space-3);
+    }
+
+    .pixel-title {
+      font-family: "Press Start 2P", monospace;
+      font-size: clamp(0.8rem, 2.1vw, 1.15rem);
+      line-height: 1.6;
+      margin: 0;
+      color: var(--lavender-deep);
+      text-transform: uppercase;
+    }
+
+    .section,
+    .meta {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      box-shadow: 0 6px 24px var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section::before,
+    .meta::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 18px;
+      right: 18px;
+      height: 4px;
+      border-radius: 0 0 4px 4px;
+      background: linear-gradient(
+        90deg,
+        var(--snes-red) 0% 25%,
+        var(--snes-yellow) 25% 50%,
+        var(--snes-green) 50% 75%,
+        var(--snes-blue) 75% 100%
+      );
+      opacity: 0.86;
+    }
+
+    .meta {
+      padding: var(--space-4);
+      display: grid;
+      gap: var(--space-3);
+    }
+
+    .meta-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+    }
+
+    .meta-tag {
+      font-size: 12px;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: var(--lavender-deep);
+      font-weight: 700;
+    }
+
+    .avatars {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.85);
+      object-fit: contain;
+      padding: 2px;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-2) var(--space-4);
+    }
+
+    .meta-item dt {
+      margin: 0;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-light);
+    }
+
+    .meta-item dd {
+      margin: 2px 0 0;
+      font-size: 14px;
+      color: var(--text-dark);
+      font-weight: 700;
+    }
+
+    .section {
+      padding: var(--space-4);
+    }
+
+    h2 {
+      margin: 0 0 var(--space-2);
+      font-family: "Press Start 2P", monospace;
+      font-size: clamp(0.72rem, 1.65vw, 0.92rem);
+      line-height: 1.55;
+      color: var(--lavender-deep);
+      text-transform: uppercase;
+    }
+
+    p {
+      margin: 0 0 var(--space-2);
+      font-size: 14px;
+      color: var(--text-mid);
+    }
+
+    p:last-child { margin-bottom: 0; }
+
+    .phase-list,
+    .move-list,
+    .reuse-list {
+      margin: 0;
+      padding-left: 22px;
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    .phase-list li,
+    .reuse-list li {
+      color: var(--text-mid);
+      font-size: 14px;
+    }
+
+    .phase-list strong,
+    .move-list strong {
+      color: var(--text-dark);
+    }
+
+    .dialogue-grid {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+      position: relative;
+    }
+
+    .dialogue-grid::before {
+      content: "";
+      position: absolute;
+      top: 8px;
+      bottom: 8px;
+      left: 50%;
+      width: 2px;
+      transform: translateX(-50%);
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(107, 107, 157, 0.45) 0 10px,
+        rgba(107, 107, 157, 0.08) 10px 20px
+      );
+    }
+
+    .utterance {
+      position: relative;
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.74);
+      padding: 12px 12px 12px 50px;
+      font-size: 13px;
+      color: var(--text-mid);
+      width: calc(50% - 14px);
+    }
+
+    .utterance.craig { justify-self: start; }
+    .utterance.ai {
+      justify-self: end;
+      padding: 12px 50px 12px 12px;
+    }
+
+    .utterance::before {
+      content: "";
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      width: 30px;
+      height: 30px;
+      border-radius: 7px;
+      border: 1px solid var(--glass-border);
+      background-color: rgba(255, 255, 255, 0.8);
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+
+    .utterance.craig::before {
+      background-image: url("assets/Craig_Dialogue_transparent.png");
+    }
+
+    .utterance.ai::before {
+      left: auto;
+      right: 10px;
+      background-image: url("assets/Computer_Dialogue_transparent.png");
+    }
+
+    .utterance strong {
+      color: var(--text-dark);
+      display: block;
+      margin-bottom: 4px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .move-list {
+      list-style: none;
+      padding-left: 0;
+      gap: var(--space-3);
+    }
+
+    .move {
+      border: 1px solid var(--glass-border);
+      border-left: 4px solid var(--snes-green);
+      border-radius: 10px;
+      padding: var(--space-2) var(--space-3);
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    .move p {
+      margin: 0;
+      font-size: 13px;
+    }
+
+    .move p + p { margin-top: 8px; }
+
+    .infra-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-2);
+      margin: 0;
+    }
+
+    .infra-grid div {
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      background: rgba(255, 255, 255, 0.72);
+      font-size: 13px;
+      color: var(--text-mid);
+    }
+
+    .infra-grid strong { color: var(--text-dark); }
+
+    .result-box {
+      border: 1px dashed var(--lavender);
+      border-radius: 10px;
+      padding: var(--space-3);
+      background: rgba(144, 144, 192, 0.08);
+    }
+
+    .result-box a {
+      color: var(--snes-blue);
+      text-decoration-thickness: 2px;
+      text-underline-offset: 2px;
+      word-break: break-word;
+    }
+
+    .screenshot-placeholder {
+      margin-top: var(--space-2);
+      min-height: 160px;
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: var(--text-light);
+      font-size: 13px;
+      background: repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.7),
+        rgba(255, 255, 255, 0.7) 10px,
+        rgba(144, 144, 192, 0.06) 10px,
+        rgba(144, 144, 192, 0.06) 20px
+      );
+    }
+
+    .result-shot {
+      width: 100%;
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      display: block;
+      margin-top: var(--space-2);
+    }
+
+    .home-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      background: var(--lavender);
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      width: fit-content;
+    }
+
+    .home-link:hover,
+    .home-link:focus-visible {
+      background: var(--lavender-deep);
+      outline: none;
+    }
+
+    @media (max-width: 760px) {
+      body { padding: var(--space-3); }
+      .meta,
+      .section { padding: var(--space-3); }
+      .meta-grid,
+      .infra-grid { grid-template-columns: 1fr; }
+      .dialogue-grid::before { display: none; }
+      .utterance,
+      .utterance.ai {
+        width: 100%;
+        justify-self: stretch;
+        padding: 12px 12px 12px 50px;
+      }
+      .utterance.ai::before {
+        left: 10px;
+        right: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="meta" aria-labelledby="fieldnote-title">
+      <div class="meta-top">
+        <p id="fieldnote-title" class="pixel-title">FieldNote 003</p>
+        <div class="avatars" aria-label="Project voices">
+          <img class="avatar" src="assets/Craig_Dialogue_transparent.png" alt="Craig pixel avatar" />
+          <img class="avatar" src="assets/Computer_Dialogue_transparent.png" alt="Computer pixel avatar" />
+        </div>
+      </div>
+      <dl class="meta-grid">
+        <div class="meta-item">
+          <dt>Project Title</dt>
+          <dd>Back to School 2026: AI for Inclusion</dd>
+        </div>
+        <div class="meta-item">
+          <dt>Project Type</dt>
+          <dd>Visual Guide / Professional Learning Companion</dd>
+        </div>
+        <div class="meta-item">
+          <dt>Terrain</dt>
+          <dd>Term 1 planning / Inclusion / Australian schooling context</dd>
+        </div>
+        <div class="meta-item">
+          <dt>Toolchain</dt>
+          <dd>HTML, CSS, JavaScript, AI Agent, GitHub Pages</dd>
+        </div>
+        <div class="meta-item">
+          <dt>Time to Prototype</dt>
+          <dd>~1 focused working session</dd>
+        </div>
+        <div class="meta-item">
+          <dt>Record</dt>
+          <dd>Linked article translated into visual sections and practical tools</dd>
+        </div>
+      </dl>
+    </header>
+
+    <section class="section" aria-labelledby="result-title">
+      <h2 id="result-title">The Result</h2>
+      <div class="result-box">
+        <p><strong>Public link:</strong> <a href="https://craigwrenasmir.github.io/school-2026/" target="_blank" rel="noopener noreferrer">https://craigwrenasmir.github.io/school-2026/</a></p>
+        <img
+          class="result-shot"
+          src="assets/school-2026-result.png"
+          alt="Screenshot of the Back to School 2026 visual guide with three themed sections"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
+        />
+        <div class="screenshot-placeholder" role="img" aria-label="Screenshot placeholder for Back to School 2026 guide" style="display:none;">
+          Add screenshot at assets/school-2026-result.png
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="problem-title">
+      <h2 id="problem-title">The Goal</h2>
+      <p>The source material was a dense back-to-school article about practical AI inclusion strategies for 2026. It included layered ideas about student voice, executive functioning, and creativity, plus links to specific tools.</p>
+      <p>The goal was to turn that into a visual companion that educators could scan quickly, navigate by section, and act on immediately. The page needed to preserve nuance while making the key pathways and tools obvious.</p>
+    </section>
+
+    <section class="section" aria-labelledby="strategy-title">
+      <h2 id="strategy-title">Conversation Strategy</h2>
+      <ol class="phase-list">
+        <li><strong>Lock the framing first:</strong> keep the exact message of the original article and position the page as a visual companion, not a replacement.</li>
+        <li><strong>Chunk by pedagogical arc:</strong> structure content into three sections: getting to know students, executive functioning support, and creative potentials.</li>
+        <li><strong>Pair ideas with actions:</strong> embed real tool links alongside explanations so each section offers immediate next steps.</li>
+        <li><strong>Use progressive reveal:</strong> combine short summaries, flow-style steps, and card layouts to reduce cognitive overload.</li>
+        <li><strong>End with synthesis:</strong> close with key takeaways and resource links so the page supports both reflection and follow-up.</li>
+      </ol>
+    </section>
+
+    <section class="section" aria-labelledby="dialogue-title">
+      <h2 id="dialogue-title">Dialogue Excerpt</h2>
+      <ul class="dialogue-grid">
+        <li class="utterance craig"><strong>Craig</strong>I want this to be a visual companion to the Back to School 2026 article, not just another text dump.</li>
+        <li class="utterance ai"><strong>Code AI</strong>I will keep your core ideas intact and redesign the structure for quick scanning and practical use.</li>
+        <li class="utterance craig"><strong>Craig</strong>Please organise it into three practical pathways teachers can move through quickly.</li>
+        <li class="utterance ai"><strong>Code AI</strong>I will build section cards for student understanding, executive functioning, and creative possibilities.</li>
+        <li class="utterance craig"><strong>Craig</strong>I want educators to act immediately, so tool links need to be visible where the ideas appear.</li>
+        <li class="utterance ai"><strong>Code AI</strong>I will place live links for Interests, Task Analysis, and Floating Thoughts directly in those sections.</li>
+        <li class="utterance craig"><strong>Craig</strong>Keep the tone human and reflective, especially around inclusion and classroom atmosphere.</li>
+        <li class="utterance ai"><strong>Code AI</strong>I will keep your language texture and use compact visual blocks to support different reading styles.</li>
+        <li class="utterance craig"><strong>Craig</strong>Finish with practical takeaways for Term 1 so people can walk away with a plan.</li>
+        <li class="utterance ai"><strong>Code AI</strong>I will close with six concise takeaways and a resources panel for deeper exploration.</li>
+      </ul>
+    </section>
+
+    <section class="section" aria-labelledby="turning-title">
+      <h2 id="turning-title">Turning Point Moves</h2>
+      <ul class="move-list">
+        <li class="move">
+          <p><strong>Prompt Move:</strong> Define the page as a visual companion to an existing article.</p>
+          <p><strong>Why It Mattered:</strong> Preserved conceptual integrity while allowing strong structural redesign.</p>
+        </li>
+        <li class="move">
+          <p><strong>Prompt Move:</strong> Name three specific section anchors before layout work began.</p>
+          <p><strong>Why It Mattered:</strong> Prevented topic drift and created a clear journey across the page.</p>
+        </li>
+        <li class="move">
+          <p><strong>Prompt Move:</strong> Request linked tools at the point of relevance.</p>
+          <p><strong>Why It Mattered:</strong> Converted reflection content into immediate classroom action.</p>
+        </li>
+        <li class="move">
+          <p><strong>Prompt Move:</strong> Use card and flow structures for dense information blocks.</p>
+          <p><strong>Why It Mattered:</strong> Reduced cognitive load and improved accessibility for varied readers.</p>
+        </li>
+        <li class="move">
+          <p><strong>Prompt Move:</strong> End with concise takeaways and resource links.</p>
+          <p><strong>Why It Mattered:</strong> Helped educators retain the core principles and continue exploring independently.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="section" aria-labelledby="infra-title">
+      <h2 id="infra-title">Infrastructure Notes</h2>
+      <div class="infra-grid">
+        <div><strong>File Structure:</strong> single-page visual guide with section anchors for smooth in-page navigation.</div>
+        <div><strong>Content Architecture:</strong> hero, section cards, tools previews, project examples, takeaways, and resources.</div>
+        <div><strong>Hosting:</strong> GitHub Pages for open access and easy sharing with educators.</div>
+        <div><strong>Deployment Workflow:</strong> local edits, commit, push to main, automatic Pages updates.</div>
+        <div><strong>External Integrations:</strong> direct links to Universal Sandpit tools and related project pages.</div>
+        <div><strong>Maintenance Pattern:</strong> update section cards and resources incrementally as 2026 classroom practice evolves.</div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="pattern-title">
+      <h2 id="pattern-title">Reusable Pattern</h2>
+      <p><strong>You could use this pattern to…</strong></p>
+      <ul class="reuse-list">
+        <li>convert long educational articles into navigable visual briefings for staff and school communities.</li>
+        <li>pair inclusion principles with concrete tool links so ideas become practical steps.</li>
+        <li>create start-of-term orientation pages for teachers that are fast to scan and easy to share.</li>
+        <li>translate complex thought leadership into classroom-facing resources with clear takeaways.</li>
+      </ul>
+    </section>
+
+    <a class="home-link" href="index.html" aria-label="Back to Field.Notes home">Back to Home &#8594;</a>
+  </main>
+</body>
+</html>
