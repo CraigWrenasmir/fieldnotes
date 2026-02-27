@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stage 3-4 Humanities Dashboard | History of Newcastle</title>
+  <style>
+    :root {
+      --bg: #f6f2ea;
+      --bg-top: #eaf1f4;
+      --panel: #fffdf8;
+      --panel-alt: #edf3f6;
+      --text: #1f2d33;
+      --muted: #4f636c;
+      --accent: #2f6778;
+      --accent-soft: #7ea6b3;
+      --sand: #d9c7ad;
+      --ok: #2f7a58;
+      --warn: #8a5d1b;
+      --border: #cbd6da;
+      --shadow: 0 8px 22px rgba(31, 45, 51, 0.08);
+      --font-size-base: 16px;
+      --font-main: "Trebuchet MS", "Segoe UI", sans-serif;
+    }
+
+    body.theme-vaporwave {
+      --bg: #ffe6fb;
+      --bg-top: #ffd1ef;
+      --panel: #fff2ff;
+      --panel-alt: #f5e0ff;
+      --text: #2f1747;
+      --muted: #6b4f82;
+      --accent: #ff4fb7;
+      --accent-soft: #63d2ff;
+      --sand: #e8c7e9;
+      --ok: #246a68;
+      --warn: #924a00;
+      --border: #d8a3ff;
+      --shadow: 0 9px 24px rgba(160, 73, 205, 0.2);
+    }
+
+    body.theme-cyberpunk {
+      --bg: #000000;
+      --bg-top: #000000;
+      --panel: #040704;
+      --panel-alt: #071107;
+      --text: #91ff74;
+      --muted: #56d65a;
+      --accent: #39ff14;
+      --accent-soft: #7cff66;
+      --sand: #0d1f0d;
+      --ok: #7dff87;
+      --warn: #c4ff8a;
+      --border: #1f5e1f;
+      --shadow: 0 0 14px rgba(57, 255, 20, 0.22);
+      --font-main: "Courier New", "Lucida Console", Monaco, monospace;
+    }
+
+    body.theme-fantasy {
+      --bg: #efe0c4;
+      --bg-top: #e0caa0;
+      --panel: #f8edd7;
+      --panel-alt: #efe1c5;
+      --text: #3a2a1a;
+      --muted: #6a533a;
+      --accent: #7a4f1f;
+      --accent-soft: #b88a54;
+      --sand: #e3d0ab;
+      --ok: #47633a;
+      --warn: #8a3e16;
+      --border: #b59b74;
+      --shadow: 0 8px 20px rgba(92, 57, 26, 0.18);
+      --font-main: "Goudy Old Style", "Palatino Linotype", "Book Antiqua", Garamond, serif;
+    }
+
+    body.high-contrast {
+      --bg: #ffffff;
+      --bg-top: #ffffff;
+      --panel: #ffffff;
+      --panel-alt: #f3f3f3;
+      --text: #000000;
+      --muted: #111111;
+      --accent: #003a7a;
+      --accent-soft: #0059b3;
+      --sand: #d7d7d7;
+      --ok: #005b28;
+      --warn: #7a3f00;
+      --border: #333333;
+      --shadow: none;
+      --font-main: "Trebuchet MS", "Segoe UI", sans-serif;
+    }
+
+    body.large-text {
+      --font-size-base: 19px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-main);
+      background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg) 160px);
+      color: var(--text);
+      font-size: var(--font-size-base);
+      line-height: 1.45;
+    }
+
+    body.theme-fantasy {
+      background:
+        repeating-linear-gradient(
+          45deg,
+          rgba(122, 79, 31, 0.04) 0,
+          rgba(122, 79, 31, 0.04) 2px,
+          transparent 2px,
+          transparent 12px
+        ),
+        linear-gradient(180deg, var(--bg-top) 0%, var(--bg) 160px);
+    }
+
+    body.theme-cyberpunk {
+      background:
+        radial-gradient(circle at 20% 0%, rgba(57, 255, 20, 0.08), transparent 35%),
+        linear-gradient(180deg, var(--bg-top) 0%, var(--bg) 180px);
+    }
+
+    body.theme-cyberpunk .panel,
+    body.theme-cyberpunk .roadmap,
+    body.theme-cyberpunk .topbar,
+    body.theme-cyberpunk .week-card,
+    body.theme-cyberpunk details,
+    body.theme-cyberpunk .chunk-card,
+    body.theme-cyberpunk .assess-card,
+    body.theme-cyberpunk .time-step,
+    body.theme-cyberpunk .toggle-btn,
+    body.theme-cyberpunk .theme-picker,
+    body.theme-cyberpunk .theme-picker select {
+      text-shadow: 0 0 6px rgba(57, 255, 20, 0.35);
+      box-shadow: inset 0 0 0 1px rgba(57, 255, 20, 0.08);
+    }
+
+    body.theme-fantasy h1,
+    body.theme-fantasy h2,
+    body.theme-fantasy h3 {
+      letter-spacing: 0.02em;
+      font-variant: small-caps;
+    }
+
+    .dashboard {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 1.2rem;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 0.85rem 1rem;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.25rem;
+    }
+
+    .subtitle {
+      margin: 0.2rem 0 0;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    a {
+      color: var(--accent);
+      text-underline-offset: 2px;
+    }
+
+    a:hover,
+    a:focus-visible {
+      color: var(--accent-soft);
+    }
+
+    .toggles {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .toggle-btn {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.5rem 0.85rem;
+      background: var(--panel-alt);
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .toggle-btn[aria-pressed="true"] {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .theme-picker {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-weight: 700;
+      color: var(--muted);
+      background: var(--panel-alt);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.35rem 0.55rem;
+    }
+
+    .theme-picker select {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--panel);
+      color: var(--text);
+      padding: 0.28rem 0.55rem;
+      font-weight: 600;
+    }
+
+    .roadmap {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 1rem;
+    }
+
+    .roadmap h2,
+    .panel h2,
+    .section-title {
+      margin: 0 0 0.65rem;
+      font-size: 1.04rem;
+    }
+
+    .week-cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.7rem;
+    }
+
+    .week-card {
+      border: 1px solid var(--border);
+      background: var(--panel-alt);
+      border-radius: 14px;
+      padding: 0.8rem;
+      text-align: left;
+      cursor: pointer;
+      transition: transform 140ms ease, border-color 140ms ease;
+    }
+
+    .week-card:hover,
+    .week-card:focus-visible {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+      outline: none;
+    }
+
+    .week-card.active {
+      border-color: var(--accent);
+      background: #d9e7ee;
+    }
+
+    .week-tag {
+      display: inline-block;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.35rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1rem;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 1rem;
+    }
+
+    .focus-box {
+      border-left: 4px solid var(--accent);
+      background: #edf5f8;
+      padding: 0.65rem 0.8rem;
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+    }
+
+    .meta-row {
+      display: flex;
+      gap: 0.45rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.8rem;
+    }
+
+    .pill {
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      padding: 0.22rem 0.55rem;
+      background: var(--panel-alt);
+      font-size: 0.86rem;
+      color: var(--muted);
+    }
+
+    .icon-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.5rem;
+      margin-bottom: 0.65rem;
+    }
+
+    .icon-chip {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.45rem;
+      background: var(--panel-alt);
+      text-align: center;
+      font-size: 0.88rem;
+    }
+
+    .icon-glyph {
+      display: inline-grid;
+      place-items: center;
+      width: 1.35rem;
+      height: 1.35rem;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-right: 0.3rem;
+      vertical-align: middle;
+    }
+
+    details {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 0.55rem;
+      background: #fbfcfd;
+    }
+
+    summary {
+      cursor: pointer;
+      padding: 0.55rem 0.65rem;
+      font-weight: 700;
+    }
+
+    details ul,
+    .checklist {
+      margin: 0;
+      padding: 0 1rem 0.8rem 2rem;
+    }
+
+    .checklist li {
+      margin: 0.35rem 0;
+    }
+
+    .sidebar-stack {
+      display: grid;
+      gap: 1rem;
+      align-content: start;
+    }
+
+    .tracker-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.45rem;
+    }
+
+    .tracker-item input[type="checkbox"] {
+      width: 1.1rem;
+      height: 1.1rem;
+    }
+
+    .progress-wrap {
+      height: 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #eef2f4;
+      overflow: hidden;
+      margin-top: 0.4rem;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--accent-soft), var(--accent));
+      transition: width 200ms ease;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0.4rem;
+      margin-top: 0.3rem;
+    }
+
+    .time-step {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--panel-alt);
+      padding: 0.55rem;
+      font-size: 0.84rem;
+      min-height: 68px;
+    }
+
+    .time-step strong {
+      color: var(--accent);
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    .big-questions ul,
+    .resources ul {
+      margin: 0;
+      padding-left: 1.15rem;
+    }
+
+    .assess-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.65rem;
+    }
+
+    .assess-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.75rem;
+      background: var(--panel-alt);
+      cursor: pointer;
+    }
+
+    .assess-card.selected {
+      border-color: var(--accent);
+      box-shadow: inset 0 0 0 2px var(--accent-soft);
+      background: #e5eef2;
+    }
+
+    .assessment-breakdown {
+      margin-top: 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fbfdff;
+      padding: 0.8rem;
+    }
+
+    .assessment-breakdown h3 {
+      margin: 0 0 0.4rem;
+      font-size: 0.98rem;
+      color: var(--accent);
+    }
+
+    .chunk-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.6rem;
+      margin-top: 0.5rem;
+    }
+
+    .chunk-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--panel-alt);
+      padding: 0.55rem;
+    }
+
+    .chunk-card strong {
+      display: block;
+      margin-bottom: 0.2rem;
+      color: var(--accent);
+      font-size: 0.88rem;
+    }
+
+    .assessment-checklist {
+      margin: 0.65rem 0 0;
+      padding-left: 1.1rem;
+    }
+
+    .assessment-checklist li {
+      margin: 0.32rem 0;
+    }
+
+    .milestone {
+      border: 1px dashed var(--warn);
+      color: var(--warn);
+      border-radius: 10px;
+      padding: 0.45rem 0.65rem;
+      background: #fff8ef;
+      font-weight: 600;
+      margin-top: 0.6rem;
+    }
+
+    @media (max-width: 900px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+      .assess-grid {
+        grid-template-columns: 1fr;
+      }
+      .chunk-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .week-cards,
+      .timeline,
+      .icon-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="dashboard" aria-live="polite">
+    <header class="topbar">
+      <div>
+        <h1>History of Newcastle Dashboard</h1>
+        <p class="subtitle">Stage 3-4 Humanities • 3 Weeks • One clear plan at a time</p>
+      </div>
+      <div class="toggles" aria-label="Accessibility settings">
+        <label class="theme-picker" for="themeSelect">
+          Style
+          <select id="themeSelect" aria-label="Choose display style">
+            <option value="normal">Normal</option>
+            <option value="vaporwave">Vaporwave</option>
+            <option value="cyberpunk">Cyberpunk</option>
+            <option value="fantasy">Fantasy</option>
+          </select>
+        </label>
+        <button class="toggle-btn" id="contrastToggle" aria-pressed="false">High Contrast</button>
+        <button class="toggle-btn" id="fontToggle" aria-pressed="false">Larger Text</button>
+      </div>
+    </header>
+
+    <section class="roadmap" aria-label="Week roadmap">
+      <h2>Unit Roadmap</h2>
+      <div class="week-cards" role="tablist" aria-label="Choose a week">
+        <button class="week-card active" role="tab" aria-selected="true" aria-controls="weekPanel" data-week="0">
+          <span class="week-tag">Week 1</span>
+          <div>First Nations and Early Settlement</div>
+        </button>
+        <button class="week-card" role="tab" aria-selected="false" aria-controls="weekPanel" data-week="1">
+          <span class="week-tag">Week 2</span>
+          <div>Coal, Industry and Growth</div>
+        </button>
+        <button class="week-card" role="tab" aria-selected="false" aria-controls="weekPanel" data-week="2">
+          <span class="week-tag">Week 3</span>
+          <div>Change, Decline and Renewal</div>
+        </button>
+      </div>
+    </section>
+
+    <section class="panel" aria-label="Historical timeline">
+      <h2>Newcastle Timeline</h2>
+      <div class="timeline">
+        <article class="time-step"><strong>Pre-1800</strong>Awabakal people care for Country.</article>
+        <article class="time-step"><strong>1804</strong>Newcastle becomes a penal settlement.</article>
+        <article class="time-step"><strong>1820-1950</strong>Coal, harbour trade, and steel drive growth.</article>
+        <article class="time-step"><strong>1999</strong>BHP Steelworks closes.</article>
+        <article class="time-step"><strong>Present</strong>City renewal, culture, and environmental restoration.</article>
+      </div>
+    </section>
+
+    <section class="grid-2">
+      <article class="panel" id="weekPanel" tabindex="-1">
+        <h2 id="weekTitle">Week 1: First Nations and Early Settlement</h2>
+        <div class="focus-box" id="weekFocus"></div>
+
+        <div class="meta-row" id="weekMeta"></div>
+
+        <div class="icon-row" aria-label="Learning actions">
+          <div class="icon-chip"><span class="icon-glyph" aria-hidden="true">L</span>Learn</div>
+          <div class="icon-chip"><span class="icon-glyph" aria-hidden="true">D</span>Discuss</div>
+          <div class="icon-chip"><span class="icon-glyph" aria-hidden="true">C</span>Create</div>
+          <div class="icon-chip"><span class="icon-glyph" aria-hidden="true">R</span>Reflect</div>
+        </div>
+
+        <details open>
+          <summary>This Week's Focus Skills</summary>
+          <ul id="weekSkills"></ul>
+        </details>
+
+        <details open>
+          <summary>What You Need to Do</summary>
+          <ul class="checklist" id="weekChecklist"></ul>
+        </details>
+
+        <div class="milestone" id="milestone"></div>
+      </article>
+
+      <aside class="sidebar-stack">
+        <section class="panel" aria-label="Progress tracker">
+          <h2>Progress Tracker</h2>
+          <label class="tracker-item"><input type="checkbox" class="progress-box" data-week="0" /> Week 1 complete</label>
+          <label class="tracker-item"><input type="checkbox" class="progress-box" data-week="1" /> Week 2 complete</label>
+          <label class="tracker-item"><input type="checkbox" class="progress-box" data-week="2" /> Week 3 complete</label>
+          <div class="progress-wrap" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
+          <p id="progressLabel" class="subtitle">0 of 3 weeks completed</p>
+        </section>
+
+        <section class="panel big-questions" aria-label="Big questions">
+          <h2>Big Questions</h2>
+          <ul>
+            <li>Who lived in Newcastle before British colonisation?</li>
+            <li>Why was Newcastle set up as a penal settlement?</li>
+            <li>How did coal and industry shape the city?</li>
+            <li>How has Newcastle changed over time?</li>
+            <li>What might Newcastle's future look like?</li>
+          </ul>
+        </section>
+      </aside>
+    </section>
+
+    <section class="panel" aria-label="Assessment choices">
+      <h2>Assessment Choices</h2>
+      <p class="subtitle">Pick one option to show your learning. You can change your choice later.</p>
+      <div class="assess-grid" id="assessmentOptions">
+        <button class="assess-card" data-option="A"><strong>Option A</strong><br/>Create a visual timeline of key stages in Newcastle's history.</button>
+        <button class="assess-card" data-option="B"><strong>Option B</strong><br/>Write a short story from someone living in Newcastle in a chosen era.</button>
+        <button class="assess-card" data-option="C"><strong>Option C</strong><br/>Design a "Future Newcastle" proposal using historical evidence.</button>
+      </div>
+      <p id="assessmentStatus" class="subtitle" style="margin-top: 0.6rem;">No option selected yet.</p>
+      <section class="assessment-breakdown" id="assessmentBreakdown" aria-live="polite">
+        <h3>Assessment Breakdown</h3>
+        <p class="subtitle" id="assessmentGoal">Choose an option above to see the task broken into simple chunks.</p>
+        <div class="chunk-grid" id="assessmentChunks"></div>
+        <ul class="assessment-checklist" id="assessmentChecklist"></ul>
+      </section>
+    </section>
+
+    <section class="panel resources" aria-label="Resources">
+      <h2>Helpful Resources</h2>
+      <ul>
+        <li><a href="https://newcastle.nsw.gov.au/explore/history-and-heritage" target="_blank" rel="noopener noreferrer">City of Newcastle: History and Heritage</a></li>
+        <li><a href="https://www.sl.nsw.gov.au/research-and-collections/formats/pictures" target="_blank" rel="noopener noreferrer">State Library of NSW: Pictures Collection (historical images)</a></li>
+        <li><a href="https://trove.nla.gov.au/newspaper/" target="_blank" rel="noopener noreferrer">Trove: Newspapers and Gazettes Archive</a></li>
+        <li><a href="https://newcastlemuseum.com.au/collection/search-the-collection" target="_blank" rel="noopener noreferrer">Newcastle Museum: Search the Collection</a></li>
+        <li><a href="https://nfhs.org.au/" target="_blank" rel="noopener noreferrer">Newcastle Family History Society (guest speaker/local historian contact)</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <script>
+    const weekData = [
+      {
+        title: "Week 1: First Nations and Early Settlement",
+        focus: "This week, you will learn about Awabakal Country and the early years of British settlement.",
+        tags: ["Awabakal history", "Colonisation", "Penal colony (1804)"],
+        skills: [
+          "Understand why the Awabakal people are the Traditional Custodians of this region.",
+          "Explain why Newcastle was chosen as a penal colony.",
+          "Read and discuss early maps, sketches, and written accounts."
+        ],
+        checklist: [
+          "Complete the map activity of Awabakal land.",
+          "Analyse at least two historical sources in class.",
+          "Contribute one idea to the class discussion: Why Newcastle?",
+          "Add events from pre-1800 to 1820 to your timeline."
+        ],
+        milestone: "Milestone: Timeline start and source notes completed by end of Week 1."
+      },
+      {
+        title: "Week 2: Coal, Industry and Growth",
+        focus: "This week, you will investigate how industry, harbour trade, and migration changed Newcastle.",
+        tags: ["Coal mining", "BHP steelworks", "Migration and growth"],
+        skills: [
+          "Describe how coal mining and shipping supported city growth.",
+          "Compare Newcastle with another Australian industrial city.",
+          "Collect oral history insights from a family or community member."
+        ],
+        checklist: [
+          "Analyse photos of coal mines and steelworks.",
+          "Complete the city comparison task.",
+          "Interview one person and record key points.",
+          "Add 1820-1950 events to your timeline."
+        ],
+        milestone: "Milestone: Oral history task drafted and timeline expanded by end of Week 2."
+      },
+      {
+        title: "Week 3: Change, Decline and Renewal",
+        focus: "This week, you will explore the 1999 BHP closure and how Newcastle has renewed itself.",
+        tags: ["BHP closure", "Renewal", "Newcastle today"],
+        skills: [
+          "Explain the impact of BHP closing in 1999.",
+          "Use evidence in a debate about whether Newcastle is still industrial.",
+          "Create a future-focused idea informed by historical change."
+        ],
+        checklist: [
+          "Review at least one news report about the BHP closure.",
+          "Take part in the class debate.",
+          "Design your Newcastle 2050 concept poster.",
+          "Finish your timeline to present day."
+        ],
+        milestone: "Milestone: Final assessment plan submitted and timeline completed this week."
+      }
+    ];
+
+    const weekCards = document.querySelectorAll('.week-card');
+    const weekTitle = document.getElementById('weekTitle');
+    const weekFocus = document.getElementById('weekFocus');
+    const weekMeta = document.getElementById('weekMeta');
+    const weekSkills = document.getElementById('weekSkills');
+    const weekChecklist = document.getElementById('weekChecklist');
+    const milestone = document.getElementById('milestone');
+
+    const progressBoxes = document.querySelectorAll('.progress-box');
+    const progressBar = document.getElementById('progressBar');
+    const progressLabel = document.getElementById('progressLabel');
+
+    const contrastToggle = document.getElementById('contrastToggle');
+    const fontToggle = document.getElementById('fontToggle');
+    const themeSelect = document.getElementById('themeSelect');
+
+    function renderWeek(index) {
+      const week = weekData[index];
+      weekTitle.textContent = week.title;
+      weekFocus.textContent = week.focus;
+      weekMeta.innerHTML = week.tags.map(tag => `<span class="pill">${tag}</span>`).join('');
+      weekSkills.innerHTML = week.skills.map(item => `<li>${item}</li>`).join('');
+      weekChecklist.innerHTML = week.checklist.map(item => `<li>${item}</li>`).join('');
+      milestone.textContent = week.milestone;
+
+      weekCards.forEach((card, i) => {
+        const active = i === index;
+        card.classList.toggle('active', active);
+        card.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+    }
+
+    weekCards.forEach((card) => {
+      card.addEventListener('click', () => {
+        renderWeek(Number(card.dataset.week));
+      });
+    });
+
+    function updateProgress() {
+      const done = [...progressBoxes].filter(box => box.checked).length;
+      const pct = (done / progressBoxes.length) * 100;
+      progressBar.style.width = `${pct}%`;
+      progressLabel.textContent = `${done} of ${progressBoxes.length} weeks completed`;
+    }
+
+    progressBoxes.forEach(box => box.addEventListener('change', updateProgress));
+
+    contrastToggle.addEventListener('click', () => {
+      const active = document.body.classList.toggle('high-contrast');
+      contrastToggle.setAttribute('aria-pressed', String(active));
+    });
+
+    fontToggle.addEventListener('click', () => {
+      const active = document.body.classList.toggle('large-text');
+      fontToggle.setAttribute('aria-pressed', String(active));
+    });
+
+    themeSelect.addEventListener('change', () => {
+      document.body.classList.remove('theme-vaporwave', 'theme-cyberpunk', 'theme-fantasy');
+      if (themeSelect.value !== 'normal') {
+        document.body.classList.add(`theme-${themeSelect.value}`);
+      }
+    });
+
+    const assessmentOptions = document.querySelectorAll('.assess-card');
+    const assessmentStatus = document.getElementById('assessmentStatus');
+    const assessmentGoal = document.getElementById('assessmentGoal');
+    const assessmentChunks = document.getElementById('assessmentChunks');
+    const assessmentChecklist = document.getElementById('assessmentChecklist');
+
+    const assessmentData = {
+      A: {
+        goal: "Goal: Build a clear visual timeline that shows key changes in Newcastle over time.",
+        chunks: [
+          { title: "Chunk 1: Choose Events", text: "Select 6-8 key events across the timeline (Pre-1800 to Present)." },
+          { title: "Chunk 2: Add Evidence", text: "Attach short source notes for each event (photo, quote, or fact)." },
+          { title: "Chunk 3: Explain Change", text: "Write simple captions that explain why each event matters." }
+        ],
+        checklist: [
+          "My timeline has events from all major eras.",
+          "Each event includes evidence from a source.",
+          "My captions explain historical change clearly.",
+          "My final layout is easy to read."
+        ]
+      },
+      B: {
+        goal: "Goal: Write a short historical narrative from the viewpoint of a person in one era.",
+        chunks: [
+          { title: "Chunk 1: Pick Perspective", text: "Choose an era and decide who your narrator is (worker, child, elder, migrant, etc.)." },
+          { title: "Chunk 2: Plan Story", text: "Draft beginning, middle, and end with at least 3 historical details." },
+          { title: "Chunk 3: Edit for Accuracy", text: "Check facts, timeline details, and clear paragraph structure." }
+        ],
+        checklist: [
+          "My narrator and era are clearly introduced.",
+          "I used historical facts and realistic details.",
+          "My story has a clear beginning, middle, and end.",
+          "I edited spelling, punctuation, and clarity."
+        ]
+      },
+      C: {
+        goal: "Goal: Create a Future Newcastle proposal that uses history to support your ideas.",
+        chunks: [
+          { title: "Chunk 1: Identify Issue", text: "Choose one city issue (environment, transport, jobs, culture, housing)." },
+          { title: "Chunk 2: Link to History", text: "Use past examples (industry, migration, renewal) to justify your plan." },
+          { title: "Chunk 3: Present Solution", text: "Show your 2050 idea with visuals and 3 action steps." }
+        ],
+        checklist: [
+          "My proposal solves a clear city challenge.",
+          "I connected my idea to Newcastle's history.",
+          "I included visuals and practical actions.",
+          "I explained how my plan helps people and place."
+        ]
+      }
+    };
+
+    function renderAssessment(option) {
+      const details = assessmentData[option];
+      if (!details) {
+        assessmentGoal.textContent = "Choose an option above to see the task broken into simple chunks.";
+        assessmentChunks.innerHTML = "";
+        assessmentChecklist.innerHTML = "";
+        return;
+      }
+
+      assessmentGoal.textContent = details.goal;
+      assessmentChunks.innerHTML = details.chunks.map(chunk =>
+        `<article class="chunk-card"><strong>${chunk.title}</strong><span>${chunk.text}</span></article>`
+      ).join('');
+      assessmentChecklist.innerHTML = details.checklist.map(item =>
+        `<li><label><input type="checkbox" /> ${item}</label></li>`
+      ).join('');
+    }
+
+    assessmentOptions.forEach((card) => {
+      card.addEventListener('click', () => {
+        assessmentOptions.forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        assessmentStatus.textContent = `Selected: ${card.dataset.option}. You can now plan this as your final assessment.`;
+        renderAssessment(card.dataset.option);
+      });
+    });
+
+    renderWeek(0);
+    updateProgress();
+    renderAssessment();
+  </script>
+</body>
+</html>
