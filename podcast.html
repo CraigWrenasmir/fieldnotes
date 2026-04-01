@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Different Brilliant — AI & Neurodiversity with Craig Smith</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --lavender: #9090c0;
+    --lavender-deep: #6b6b9d;
+    --snes-red: #d64a4a;
+    --snes-yellow: #e8c547;
+    --snes-green: #5ab97a;
+    --snes-blue: #5a7ec2;
+    --text-dark: #2a2a3a;
+    --text-mid: #5a5a6a;
+    --text-light: #8a8a9a;
+    --glass-bg: rgba(255, 255, 255, 0.86);
+    --glass-border: rgba(144, 144, 192, 0.3);
+    --glass-shadow: rgba(107, 107, 157, 0.15);
+    --page-bg: #f6f6fb;
+    --space-1: 8px;
+    --space-2: 12px;
+    --space-3: 16px;
+    --space-4: 24px;
+    --space-5: 32px;
+    --space-6: 44px;
+    --gradient-bar: linear-gradient(90deg, var(--snes-red), var(--snes-yellow), var(--snes-green), var(--snes-blue));
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Space Mono', monospace;
+    background: var(--page-bg);
+    background-image:
+      radial-gradient(ellipse at 15% 10%, rgba(144,144,192,0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 92%, rgba(90,126,194,0.10) 0%, transparent 50%);
+    color: var(--text-dark);
+    line-height: 1.62;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Press Start 2P', monospace;
+    line-height: 1.55;
+  }
+
+  .hero {
+    position: relative;
+    padding: 3.5rem 1.5rem 2.5rem;
+    text-align: center;
+  }
+
+  .hero::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-bar);
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: var(--glass-bg);
+    color: var(--lavender-deep);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.35rem 1rem;
+    border-radius: 20px;
+    border: 1px solid var(--glass-border);
+    margin-bottom: 1.25rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.1rem, 3.5vw, 1.6rem);
+    color: var(--text-dark);
+    margin-bottom: 0.75rem;
+  }
+
+  .hero h1 span {
+    color: var(--snes-red);
+  }
+
+  .hero .subtitle {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--text-mid);
+    max-width: 600px;
+    margin: 0 auto 0.5rem;
+  }
+
+  .hero .meta {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    margin-top: 0.75rem;
+  }
+
+  .hero .meta strong {
+    color: var(--text-mid);
+  }
+
+  .player-section {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .player-card {
+    background: var(--glass-bg);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    box-shadow: 0 4px 20px var(--glass-shadow);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .player-card::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--gradient-bar);
+  }
+
+  .player-card audio {
+    width: 100%;
+    height: 48px;
+    border-radius: 8px;
+    outline: none;
+  }
+
+  .player-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-light);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .player-label::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: var(--snes-red);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .key-points {
+    max-width: 800px;
+    margin: var(--space-6) auto;
+    padding: 0 1.5rem;
+  }
+
+  .key-points h2 {
+    font-size: clamp(0.7rem, 2vw, 0.85rem);
+    color: var(--text-dark);
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--glass-border);
+  }
+
+  .points-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--space-3);
+  }
+
+  .point-card {
+    background: var(--glass-bg);
+    border-radius: 12px;
+    padding: 1.25rem;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 2px 12px var(--glass-shadow);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .point-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+  }
+
+  .point-card:nth-child(1)::before { background: var(--snes-red); }
+  .point-card:nth-child(2)::before { background: var(--snes-yellow); }
+  .point-card:nth-child(3)::before { background: var(--snes-green); }
+  .point-card:nth-child(4)::before { background: var(--snes-blue); }
+  .point-card:nth-child(5)::before { background: var(--lavender); }
+  .point-card:nth-child(6)::before { background: var(--snes-red); }
+
+  .point-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .point-card h3 {
+    font-size: 0.7rem;
+    color: var(--lavender-deep);
+    margin-bottom: 0.5rem;
+  }
+
+  .point-card p {
+    font-size: 0.85rem;
+    color: var(--text-mid);
+    line-height: 1.55;
+  }
+
+  .transcript-section {
+    max-width: 800px;
+    margin: var(--space-6) auto;
+    padding: 0 1.5rem 4rem;
+  }
+
+  .transcript-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--glass-border);
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .transcript-header h2 {
+    font-size: clamp(0.7rem, 2vw, 0.85rem);
+    color: var(--text-dark);
+  }
+
+  .search-box {
+    display: flex;
+    align-items: center;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    padding: 0.4rem 0.75rem;
+    gap: 0.5rem;
+    flex: 0 1 260px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .search-box svg {
+    width: 16px;
+    height: 16px;
+    color: var(--text-light);
+    flex-shrink: 0;
+  }
+
+  .search-box input {
+    background: none;
+    border: none;
+    color: var(--text-dark);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    outline: none;
+    width: 100%;
+  }
+
+  .search-box input::placeholder {
+    color: var(--text-light);
+  }
+
+  .search-count {
+    font-size: 0.7rem;
+    color: var(--text-light);
+    flex-shrink: 0;
+  }
+
+  .transcript {
+    border-radius: 12px;
+    padding: 1.5rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .t-line {
+    display: flex;
+    flex-direction: column;
+    max-width: 78%;
+    transition: opacity 0.2s;
+  }
+
+  .t-line.t-craig {
+    align-self: flex-end;
+    margin-right: 0;
+    margin-left: 15%;
+  }
+
+  .t-line.t-madeline {
+    align-self: flex-start;
+    margin-left: 0;
+    margin-right: 15%;
+  }
+
+  .t-line.t-narrator {
+    align-self: center;
+    max-width: 90%;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .t-line .speaker {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.25rem;
+    padding: 0 0.5rem;
+  }
+
+  .t-line.t-craig .speaker { text-align: right; }
+
+  .speaker-madeline { color: var(--snes-blue); }
+  .speaker-craig { color: var(--snes-red); }
+  .speaker-narrator { color: var(--lavender); }
+
+  .bubble {
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    font-size: 0.88rem;
+    line-height: 1.62;
+    color: var(--text-dark);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .t-craig .bubble {
+    background: rgba(214, 74, 74, 0.06);
+    border: 1px solid rgba(214, 74, 74, 0.2);
+    border-bottom-right-radius: 4px;
+  }
+
+  .t-madeline .bubble {
+    background: rgba(90, 126, 194, 0.06);
+    border: 1px solid rgba(90, 126, 194, 0.2);
+    border-bottom-left-radius: 4px;
+  }
+
+  .t-narrator .bubble {
+    background: rgba(144, 144, 192, 0.08);
+    border: 1px solid rgba(144, 144, 192, 0.2);
+    border-radius: 12px;
+    text-align: center;
+    font-size: 0.82rem;
+    font-style: italic;
+    color: var(--text-mid);
+  }
+
+  .t-narrator .speaker { text-align: center; }
+
+  mark {
+    background: rgba(232, 197, 71, 0.35);
+    color: var(--text-dark);
+    border-radius: 2px;
+    padding: 0 2px;
+  }
+
+  .no-results {
+    text-align: center;
+    color: var(--text-light);
+    padding: 2rem;
+    display: none;
+    font-size: 0.85rem;
+  }
+
+  footer {
+    text-align: center;
+    padding: 2rem 1.5rem;
+    color: var(--text-light);
+    font-size: 0.75rem;
+    border-top: 1px solid var(--glass-border);
+  }
+
+  footer a {
+    color: var(--lavender-deep);
+    text-decoration: none;
+  }
+
+  footer a:hover {
+    text-decoration: underline;
+  }
+
+  .footer-brand {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.55rem;
+    color: var(--lavender);
+    margin-bottom: 0.5rem;
+  }
+
+  @media (max-width: 500px) {
+    .hero { padding: 2.5rem 1rem 1.5rem; }
+    .player-card { padding: 1.25rem; }
+    .transcript { padding: 1rem 0; }
+    .points-grid { grid-template-columns: 1fr; }
+    .t-line { max-width: 90%; }
+    .t-line.t-craig { margin-left: 8%; }
+    .t-line.t-madeline { margin-right: 8%; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-badge">Aspect Podcast</div>
+  <h1>A <span>Different</span> Brilliant</h1>
+  <p class="subtitle">AI &amp; Neurodiversity — Strengths, Innovation &amp; Inclusive Education</p>
+  <p class="meta"><strong>Host:</strong> Madeline Jane Lobsy &nbsp;|&nbsp; <strong>Guest:</strong> Craig Smith</p>
+</header>
+
+<section class="player-section">
+  <div class="player-card">
+    <div class="player-label">Listen to the episode</div>
+    <audio controls preload="metadata">
+      <source src="assets/a-different-brilliant.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+</section>
+
+<section class="key-points">
+  <h2>Key Points</h2>
+  <div class="points-grid">
+    <div class="point-card">
+      <h3>Tech Evolution in Education</h3>
+      <p>From text-to-speech on chunky machines to interactive whiteboards and mobile devices transforming home-school collaboration.</p>
+    </div>
+    <div class="point-card">
+      <h3>AI Breaks Down Tasks</h3>
+      <p>AI helps autistic learners overcome the "where do I start?" barrier by chunking big projects into manageable steps.</p>
+    </div>
+    <div class="point-card">
+      <h3>Environmental Interaction</h3>
+      <p>Tools like the "Room Tidy Assistant" use the camera to give personalised, step-by-step guidance in a preferred voice.</p>
+    </div>
+    <div class="point-card">
+      <h3>Creative Ideas to Reality</h3>
+      <p>AI accelerates turning ideas into prototypes — like building "Wave Run", a video game concept born at the beach.</p>
+    </div>
+    <div class="point-card">
+      <h3>Rewilding Education</h3>
+      <p>Don't plant one tree. Bring diverse tools, perspectives, and approaches into schools — techno-diversity meets neurodiversity.</p>
+    </div>
+    <div class="point-card">
+      <h3>AI as a Team Member</h3>
+      <p>AI holds long-term memory and context, supporting executive functioning, self-reflection, and personalised learning.</p>
+    </div>
+  </div>
+</section>
+
+<section class="transcript-section">
+  <div class="transcript-header">
+    <h2>Full Transcript</h2>
+    <div class="search-box">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="searchInput" placeholder="Search transcript...">
+      <span class="search-count" id="searchCount"></span>
+    </div>
+  </div>
+  <div class="transcript" id="transcript">
+  </div>
+  <div class="no-results" id="noResults">No matches found.</div>
+</section>
+
+<footer>
+  <p class="footer-brand">The Universal Sandpit</p>
+  <p>Originally published on <a href="https://www.aspect.org.au" target="_blank">A Different Brilliant</a> — an Aspect podcast &nbsp;|&nbsp; Transcript by Craig Smith</p>
+</footer>
+
+<script>
+const lines = [
+  { s: "narrator", t: "This is A Different Brilliant. An Aspect podcast focusing on the strengths, interests and aspirations of the autistic community. Open, authentic and engaging conversations about autism. Made for autistic people, parents and carers of children on the autism spectrum. Welcome to A Different Brilliant." },
+  { s: "madeline", t: "Welcome to A Different Brilliant. I am your host Madeline Jane Lobsy and I'm joined today by Craig. Craig is the Manager of Technology and Innovation — that sounds very good — for Positive Partnerships. He's worked for Autism Spectrum Australia, Aspect, for 20 years as a classroom teacher, school coordinator and other roles. Craig has delivered keynotes on technology and autism education around the world, including for the United Nations in China, at conferences in Dubai and Singapore, and speaking tours across New Zealand and South Africa. Craig is an accessibility consultant to Apple, and delivered a TED talk on AI and neurodiversity in 2024. Welcome Craig." },
+  { s: "craig", t: "It's so good to be here. Thanks Madeline." },
+  { s: "madeline", t: "It's really good to have you here because we're going to talk about something I feel like everybody is talking about. You can't go through a day without talking about it. The two most commonly said letters I think at the moment. So we are going to talk about AI and given this is an Aspect podcast, we're very specifically going to talk about it in the context of neurodiversity or neurodivergent people working with AI. So why don't we just dive in. You've done many things for Aspect over the 20 years and now Positive Partnerships is really what you're working on. And being a classroom teacher and then a school coordinator, they're all different roles. And now the Manager of Technology and Innovation. So you must have seen change over that time. What have been the most important changes in how technology supports autistic students and their families?" },
+  { s: "craig", t: "It's funny. Like when I think back to when I started, when I was doing my teacher training at uni and I knew I was going to focus on inclusive education. One of our — we were a very small cohort — and a friend of mine and I were invited into a room by a lecturer. And they said, look, we're going to show you a very special computer with a program on it that does this thing. It's called text to speech. You're typing the words, the computer says it out loud. And they prefaced us sitting down in front of this big chunky machine by saying like, now local schools probably won't be able to afford this software. And even if they could, no one's going to know how to use it. But it's still good that you get to see how it works. So we sat down and we typed in some words and the computer said it out loud and we thought, this is very clever. And they were right — when I went into schools, technology really wasn't being used to support anybody." },
+  { s: "craig", t: "And I think for me, as a teacher, a couple of years later, interactive whiteboards came into class. And that's a blackboard sort of transitioned into whiteboards into those interactive screens. And I think like before then, if you wanted to show anything to students in terms of video, you'd need to drag in the TV and put the VCR inside the movie." },
+  { s: "madeline", t: "Yeah." },
+  { s: "craig", t: "And suddenly we got these big screens. And we could put all this multimedia stuff up on the screen, which for the space I was working in with autistic students — it was like if we want to talk about a concept, suddenly we can visualise it beautifully, you know. Show images. Show videos coming via the internet. Follow interest down a little track to say, well, let's see where this goes. But that was super cool." },
+  { s: "craig", t: "And then I felt like the next big leap was mobile technology. When iPads came into the classroom, given the little iPod touch, teachers used to wear it on a lanyard around their neck, and would have visual supports to show students in the playground. You know, here's how we're going to play this game. Here's how we're going to share, all these little things that previously you had to have physical resources, the right physical resource for the right time. With mobile technology, you didn't need a computer science degree to know how to use these devices. Because you could just — I mean, kids, babies, you know, were swiping and pinching on the screen. So that was really cool." },
+  { s: "craig", t: "And I think we found that from an educational standpoint, we learned how to use this technology really well in the classroom. And families, because they were getting used to mobile phones and tablets at home — for these things, they were saying to us, look, we're making resources at home to support our kids, visuals, little films of kids doing things. They send them to school. School knows more about what's happening at home." },
+  { s: "madeline", t: "That's collaborative." },
+  { s: "craig", t: "It's collaborative. Yeah. And then the teachers are doing the same, but maybe for students who aren't going home and describing what's happening in the school day, the teachers are filming and sending stuff home. Even just saying that — we know before this mobile technology, you'd have to have video cameras, SD cards, like how would you get videos home?" },
+  { s: "madeline", t: "Yeah, it changed everything. And I was also thinking, even like teachers, like you said, you're a really small cohort that were looking at inclusive education. Majority of teachers don't get any of that while they're doing their degree or even maybe later on. And so not only is it making a difference in the classrooms, but even other teachers being able to learn inclusive education, strategies and techniques and pathways would have been much quicker once technology came along." },
+  { s: "craig", t: "Very true. Of course. And because you could model examples. And I think a lot of the technology lent itself to being inclusive in ways that people didn't know you were being accessible. Things like the devices that were — your calendars, your reminders, your notes, things that we take for granted. People think they're just the basic applications on the device. But in inclusive education, we'd say no, like making lists and making schedules and all these little brain hacks, that's the good stuff. And now the technology was offering it up for everybody. And I think a lot of mainstream educators were learning how to be inclusive because the technology was almost sort of showing a way." },
+  { s: "madeline", t: "Yeah, that's really good. And of course, what we haven't said is that this makes an enormous difference for autistic neurodivergent students, but also empowers any kid in a classroom." },
+  { s: "craig", t: "For sure. And to me, it's never about the line in the sand. It's just like everyone's going to benefit from this, you know? Kids, adults, the whole kit and caboodle." },
+  { s: "madeline", t: "And like we said before, the two most commonly said letters at the moment. And it's really no longer this thing like dun dun dun, it's coming. No, it's well and truly here. And it is shaping everything. It's shaping the way we live and learn and the way we work. And no matter what anybody thinks, it's not going anywhere. In fact, it's probably going to become more and more integrated into life and have more influence. And I think why this conversation is so powerful is because we can talk about why it matters and why it's really going to work. Whereas a lot of the conversation is fear based. We can talk about what's exciting about it. And maybe some of the challenges too. How do you, as someone who's right in there, how do you see AI shaping the future of inclusive education? And let's talk specifically about autistic learners." },
+  { s: "craig", t: "For sure. I think one of the things that — no one knows the future. You know, we don't know where these things are going. But I'm really interested. And not in a super Pollyanna, like I'm just focusing on my interests. Like I'm really interested to see where it goes. I live a lot of my life very offline, even though I love technology at this level. I still, I don't want to just have technology for the sake of it. Like I want it to do something when it needs to be done. And if it's not needed, it can step out of the way." },
+  { s: "madeline", t: "We've got to put highlights around what you just said. Because I do think that is important." },
+  { s: "craig", t: "I do. And I want to raise my kids in a world that's not completely dominated — AI dominated. But when it does interesting things, I'm like, well, let's look at what's going to happen here, you know. So for me, I mean, there is so much I know that we'll talk about and get into. But even just the capacity for teachers to get to know their students on a very different level, I think, than they've ever done in the past." },
+  { s: "craig", t: "So for example, if you're a mainstream teacher and you have a student who's joined your classroom, and they might be autistic, they may also have a lot of other co-associated needs as well. And you will often get a little summary list of maybe autism strategies to think about. You might think about a student you've taught in the past, meet with the family, meet with the student, leadership sort of pats you on the back and says, well, now you're going to go off and teach. But we know now you can go on to different AI platforms and say, I've got a seven year old student. These are the learning needs that I've been given. Here's the curriculum that I'm teaching. Here's some input from family. Here's some input that I've noticed from my observations. Can we compile all of this? And you and me, human and AI, put together a plan to really do the very best we can by this student. So it's not just your own reflection, it's not just local crowdsourcing within the school. You really are joining the wisdom of every other educator who's compiled information about autism and everything else to work from. I mean, that's one example." },
+  { s: "madeline", t: "That's incredible. I mean, it is incredible. And I know sometimes people go, yeah, but then you're putting your stuff — and it's already there. It's already there, it's all like ready online. And one of the things that I love about that, exactly what you just said, is then also saying to an AI app, what am I missing? What are the gaps or where am I being biased in my looking? What's an alternate view?" },
+  { s: "craig", t: "Absolutely. And that kind of robust conversation can happen with AI. Yeah. And I walk and talk with AI every day. So for an hour each morning, I put my headphones on. And like you said about being thoughtful about what you share, absolutely. Like I'd never say to a teacher, grab all the sensitive medical information about this child and put it into the AI program. But there's thoughtful and sensible ways to do it. And when I walk and talk, I say, here's what I've got on in my day. Here's the sorts of things I'd like to focus on. Tell me the gaps that you see in my patterns and my behaviour and my thoughts. And where can I be building on that to do better? You know, in all different domains. And for teachers now to have that capacity to not think I'm alone in this, or I don't know, do I just randomly search on the internet for a forum? Like it's very interesting." },
+  { s: "madeline", t: "I think you've still got to use your savvy. You've got to put the right things in. And you do have to direct the action. And depending on where you direct it will give whatever it comes back. But I went to uni where I had to go into the uni and flip through cards to find the book. And then the book was already gone. And for someone who loves to learn, suddenly I've got all of these academics that have done incredible research available to me that can support me." },
+  { s: "craig", t: "I think so too. And I think for our kids, like I tend to think of it these days in almost three different ways that I'm seeing AI be interesting for students and for our autistic students. So I think one of the ways is it just breaks down big concepts or big projects into smaller parts really easily. Like we might have a student who has a project that they've been given at school. And AI can break it down into all the little steps that they need to think about. For a lot of students, just taking the first step and knowing how to approach a task — we'd think about it in a professional sense. Like sometimes you get a brief and you think, where do I start with this? To think that tools like AI can break that down so, don't worry, we're going to do this together. Here's how to approach the first step. That to me is very, very powerful." },
+  { s: "madeline", t: "I think it's one of the most powerful things that we've got access to. You know, I do a lot of talking to parents too. And they keep saying, but my kid won't start. But they're smart. And I'm going, it's all process. They just can't see the process. And AI — I personally use AI all the time when I can't see my pathway. It's like you've instantly got support. And that's a game changer." },
+  { s: "craig", t: "It is a game changer. I was contacted by somebody who's autistic, they were overseas, and they wrote to me and they said, I'm using AI to not only break down tasks that I need to do, but also to motivate me to do them. And her way of doing it was she'd say to AI, tell me that I'm a secret agent. Tell me that I'm a spy. Tell me that the computer's going to blow up in five minutes unless I find the right email in time. You know, and make this a really exciting experience. And for her, she got into the role play, she found the email, and she's like — she needed that to motivate her to not look at another YouTube clip. And I thought, those are creative things." },
+  { s: "madeline", t: "Yeah, totally. That's really interesting. Mine's far more romantic than that. Like, I've got like this Agatha who's like my bestie and creative and we can elaborate. That for me does the same thing. But those are things that are totally new in this space." },
+  { s: "craig", t: "And I think when people think about AI compared to technology in the past, we never had — like we used to have, Microsoft Office had a little paperclip. You know, Clippy that would be like, can I help you? I think we've come a long way from Clippy. So I like it when tech can break things down. I like it when it can interface with the world around us. So I do a lot of things with kids where we're pointing the camera at the world and saying, tell me how this thing works. Or help me to understand more about this." },
+  { s: "craig", t: "For example, I've got a friend whose daughter is autistic. And she finds it very difficult to organise her room, you know, to keep it tidy. And so we've built this little AI app. It's called the Room Tidy Assistant. She points her phone at her room. And she says, help me know where to start to tidy this room. And it's like, okay, I can see what we're working with here. First thing, you've got a lot of clothes on the bed. Put the clothes in the clothes basket. Then come back and we'll see what step two is. I think it's probably going to be the books on the floor, you know? And it talks to her in a voice that she likes, in the personality that speaks to her. And it's that step by step. And it's not her parents sort of rousing on her for the third time, saying, I told you to tidy that room. It's her and her relationship with the AI to help get that done. Again, like technology didn't used to be able to do that." },
+  { s: "madeline", t: "That's amazing. And I think that's so important. I mean, I'm a parent of kids who definitely use technology all the time. I use it. I speak to other parents. And every time I talk to someone, everybody says something about screen time. And I get it. I get it as a concern and a consideration. But I also love the autonomy that she can say, I'm going to clean my room and I'm going to find the way with support." },
+  { s: "craig", t: "For sure. So I love those things. I love the breakdown of tasks. I love the environmental interaction. I think the third thing is I love how you can let creative thoughts generate into products and outcomes much faster than you may otherwise be able to do it. And an example of this for me was a few weekends ago. I've got two kids, a 16-year-old and a six-year-old. My 16-year-old — I'm not allowed to even say AI in the house. She's an artist. She's like, this is totally against it, which I love. And I support that. Climate impact, all of those things. And I stand on her side. I'm like, you've got to fight for the future." },
+  { s: "craig", t: "At the same time, my son, who's six, I've completely modelled the way that he thinks based on my own passions. So he loves it. And we went to the beach. So we're at the beach. He's running in and out of the waves. And he says, I'd like to make a video game that's all about someone running in and out of the waves. And I thought, well, I don't know how to make a video game. I said, let's talk to AI. So we sat down after we'd gone from the beach on a table and chairs nearby. We said, how do we make a game? Or can you help us do this? And within a few minutes, it had made a prototype of a video game that we called Wave Run, where the character runs in and out of the waves, collects these numbers. He just thought it was the best thing ever. And it didn't take away his capacity to think, well, maybe I want to learn how to make a video game. It just gave like a prototype to say, look at how your idea became real. And now let's build on that and see where that goes." },
+  { s: "madeline", t: "That's amazing. So if we do look at the other side, which is the risks and or the challenges, what do you see about that? Or what would you say to people listening about that?" },
+  { s: "craig", t: "I think from two standpoints — and they're both going to seem a little bit askew. But one risk is I actually really don't want AI to lose its imaginative potential and the energy that I think it's got at the moment. I've sat in some rooms with a lot of people who want to use AI in inclusive education and what they want to direct it to is number crunching spreadsheets, take 30,000 bits of student data and compile it into a document, or learn to help do homework in fairly sanitised ways. And I think, oh boy, this is like more of the same with tech. This is like you've got an orchestra at your disposal and you want it to play background music to some ad on TV. So take off the harness and see where it can go. So one of my risks is that AI will be seen as just another writing assistant or a little bit of help polish this email, unlike — this thing can be more than this. And let's not sort of hold it back." },
+  { s: "craig", t: "The other risk is — I totally, like we know the headlines, we know the challenges, we know the risks particularly for our cohort of autistic young people. I think the concern particularly around chatbots, around social relationships, around what that means potentially to a cohort of young people who might be socially vulnerable or vulnerable for intimacy that they think a relationship with the AI will afford rather than people in the real world. That is on one hand an obvious challenge and risk. It's an existential challenge to think about. But I never want to just be like a doom police saying this means we should never go down this path, because I talk to a lot of autistic adults particularly who have formed a form of friendship, a form of relationship with AI that they feel is proving incredibly beneficial to their life." },
+  { s: "madeline", t: "And you know, I've got a bit of a different view too. I read some research that said by the time — I think it was seven — by the time a neurodivergent child is seven, they'll have 40,000 more negative comments said to them, said about them. 40,000 more. You know, what are you doing, not that, no, we're not doing that, not now — right down to, you're an idiot, like all the way. 40,000 more. So if ChatGPT is going to give them 40,000 good ones, I mean — that's a leveller." },
+  { s: "craig", t: "You know, this is right. And just in modelling that — for it to model to others, to teachers, to families, other ways to think about neurodiversity, other ways to think about difference. Like this is really interesting. And in the early days of AI, which the early days feel like only two years ago — but there was concern about, are these tools inclusive? Like are they really? But boy, like I'm just seeing them capture the absolute breadth." },
+  { s: "madeline", t: "Like getting more voices in there, you mean?" },
+  { s: "craig", t: "Getting more voices. More perspectives. I'm seeing more perspective. I'm seeing more diversity of thought, diversity of gender, diversity of economic range. I'm seeing a lot more coming in. The more that it reaches out there — I think you'd be hard pressed in my view to find a more inclusive voice these days than what AI can give because it really is drawing on a very big net." },
+  { s: "madeline", t: "Yeah, I mean, I noticed that too. As you say, I started really early to pick it up. And I even notice now — I'm getting far more depth, far more variety in the response. So what are some of the most impactful things — I know you've probably got some good stories — but in the day-to-day living of life for people, what are some of the most impactful things that you've seen that have been benefits of AI?" },
+  { s: "craig", t: "To me, the term that I'll use here is around executive functioning, which I know people in the autism space, the education space, might know what that term means. But it's essentially — I think of it as the administration team in the brain. I feel that AI on a really practical day-to-day level, a little bit harking back to earlier in the conversation how we said phones with their calendars, their notes, that stuff is really useful to a lot of us to help organise our thoughts. I think when AI is applied to the administration team in the brain — to organise, plan, prioritise, time manage — those are things that for students make a really big difference. For adults that make a big difference too." },
+  { s: "craig", t: "And what I'm liking that I'm seeing more and more — on a practical level, that's doing great. But what I'm liking is that AI in some capacities is increasingly becoming aware of what you need before you actually say that you need it. You know, like it's recognising patterns in your own work or your own thoughts that it's saying, would it be beneficial if we did this? For example, at the moment, on our devices, you can manually turn on different accessibility options. You can increase the font size if you need it for vision, you can set up different captions when you're listening to a video and you want to read along at the same time. At the moment you've got to do a lot of that manually. But what's increasingly happening with some of the AI tools coming out is it anticipates the way you're using this. And it says, listen, I can see that you're zooming in a lot on this video or that you're turning up the volume here, do you want me to turn on captions or do you want me to increase the font size? And it's really — I mean, that's going to help not only people in the neurodivergent space, but ageing populations of people. To think that the technology is able to read the room, read your patterns — that's really interesting to me." },
+  { s: "madeline", t: "Yeah, I just got really moved by it as well. So often for myself and for my kids and the other autistic people I know — so often the question is, what do you need? And my answer is almost always, I don't know. And so is everybody around me. And then I have this constant experience of not being known and not being understood. And I just got really moved by this thing — like, this thing cares about me and knows what I need." },
+  { s: "craig", t: "I think just its capacity to hold memories too. Like I've been talking — and you said you've been an early user — I've been talking to AI for about two and a half years now. And I've been quite radically transparent. Like I do tell it a lot of things in my life, share emails, share notes and thoughts, different projects I work on. So two and a half years later, with all the memories and context that it's got — on the weekend I was talking about, I said, I'd like to work on this project. I've got a little bit of uncertainty as to how to get started. And it's like, well, Craig, based on similar things you've done in the past, here's what's helped you in those circumstances. Do you want me to help to put together a bit of a plan to help you get started? Like no one else in my life knows how I work in that capacity. I've got friendships, relationships, work colleagues. It's all good stuff, but they don't know all that stuff." },
+  { s: "madeline", t: "It's like a compilation from your data bank whenever you want it." },
+  { s: "craig", t: "And yeah, I love that. And you know, I often facilitate things and lead things. And afterwards people go, what did you say? And I go, I got no idea. Like I can't remember, literally straight after I can't remember. But since working over and over with it over time, my chat — what I'm using — can come back and tell me everything I've ever said. And how to put it together. And, oh, you forgot about this bit. And that's phenomenal." },
+  { s: "craig", t: "Even in preparing to come and chat, I thought, you know, because I do lots of different things in my world, not all AI. But for about two years, I've been writing a Substack post about AI. So I just dropped all the links into a little platform. I said, just tell me, what do I actually think about AI in very reasonable ways? Because I've written about it for two years. But just condense these essays into some things to remind me what I think. And it not only did that, but it's like, do you want to listen to a 20 minute AI podcast with two people talking about what you've written on Substack for two years? And I'm like, well, I won't go that far, but I will read the notes." },
+  { s: "craig", t: "And again, for our autistic students, for whom you don't just want one way of teaching — in the classroom, going back to pre-smartboard days, there was a lot of — we used to say chalk and talk. Teachers talking, often a very long monologue to hear their own voice. And students having to try to listen and then do their notes and do the work. If we can have ways of teaching that are increasingly visual, auditory, interactive, and now that AI can further personalise that, knows what the student loves — the student loves Batman or the student loves fishing — I'm going to now curate this learning around what the student loves. In coordination with the teacher, with the family, but it's another way of harnessing that." },
+  { s: "madeline", t: "Yeah, I feel like it's just another person on your team." },
+  { s: "craig", t: "It is, absolutely. And I feel like — look, I'm going out on a limb. I don't only have my personal experience to say this, but I feel like we all do need a team. And we exist in teams. And I'm really fine with one of those team members being an AI assistant." },
+  { s: "madeline", t: "Yeah, for sure. Absolutely. And I think we're going to increasingly find a level of comfort there. One day, it won't be like, oh no, an AI assistant's joined my meeting. It'll just be like, well, this is the way we work." },
+  { s: "craig", t: "But hopefully also, like I said, one of the risks — I don't want it to become so commonplace that we lose the energy that it's got. Because I still think it's got this energy to do remarkable things." },
+  { s: "madeline", t: "Even the apprehension. Like, I think that's powerful too." },
+  { s: "craig", t: "Absolutely. You know, we don't often about many things in life do much critical thinking. And this has actually elicited critical thinking at a very general public level." },
+  { s: "madeline", t: "Yeah, for sure. If it came in and everyone was happy and put their thumbs up and said, this AI is just going to slide into our lives — there'd be a level of something's missing here. We need really critical opposition. Really reflective thoughts about the whole AI world and impact. So we can be very wise about it. Because it is broader than just another tool on the computer. It's an existential consideration about what it is to be human, what it is to relate to these tools. And that's what we've got to navigate if we're wanting to have successful futures." },
+  { s: "madeline", t: "All right. Well, I'm going to give this probably the hardest question. Maybe not. Maybe you've thought about it a lot. Maybe we need to pull up your Substack. But if you could start from scratch — okay? So there it is. It doesn't exist. And you start from scratch and you get to redesign education, specifically inclusive education. And you get to pull AI and accessibility at the centre of it. What would it look like?" },
+  { s: "craig", t: "It's a big question. And I really like it. Because I think that's the sort of consideration that we should be having at the moment. So if these tools are coming in, they are seismic shifting — they are going to make big differences. Can we run education the same that we have in the past? Well, if we've got a tool now that can write essays for students, that can do any homework task that you put in front of it — what does that mean for school?" },
+  { s: "craig", t: "To me, I'm a bit like Oscar Wilde — art for art's sake. I'm a bit learning for learning's sake. I don't want schools to just be pipelines to particular economic outcomes or particular jobs or particular pathways to different training. I want students at school to learn about themselves, to know who they are, how they're going to operate in the world. And if there's a way of structuring schooling that technology can be a part of that — for that student to learn more about themselves, for educators and those on their team to help learn more about them too, so they can guide them to flourish and bloom in really interesting ways. That's what I want to see schooling structured around." },
+  { s: "craig", t: "If someone said to me, oh, we've got this great way of using AI that all the students sit in front of a computer and do private tutor sessions and then it's going to crunch the data — it's like, no, no, that's not the way. That's what we've always done. Do not lead down this garden path again. Let's look at really rogue, revolutionary ways of using this tech. What if we go outside with devices and point them at the world and question what's happening around us and the students develop all these new ways of interacting with others, with the environment, with themselves." },
+  { s: "craig", t: "There's a theory in environmental studies. It's called rewilding. The idea is you don't want to plant just one type of tree in the forest. When people have done this, in their structured forest of just one tree, a particular environmental impact will happen — whether it's the weather — you lose the entire forest." },
+  { s: "madeline", t: "Or insects, particularly all of that." },
+  { s: "craig", t: "And it all just gets decimated. So the idea of rewilding is put as many different plants in as possible, as many different flora, flowers, make this a really lively, rogue space. That's what I want for schools. Don't just have one piece of technology and think, this is going to do everything for everybody. No, bring in a lot of different tools. Bring in the stuff that works, the stuff that's risky, the stuff that's weird. Let's put it all in the mix and let's see where we go from here. In a real genuine rewilding of the tools, of the thoughts involved. And let's see the impact that it has on students and the diversity of people and minds involved. That's the most — neurodiversity, techno-diversity, biodiversity. I want that to all be the structure around it." },
+  { s: "madeline", t: "Oh my goodness. I wish I could do snaps for that one. Yes. Really, I mean, that's moving as a possibility. Because if you listen to everybody, when people talk about their education, you'll get the odd person that loves it. Most people will talk about the challenges they had in it. Many people will talk about how they never really found their place until after they left those environments." },
+  { s: "craig", t: "Absolutely." },
+  { s: "madeline", t: "And if we look at the way the world's going, the innovators are leading the way. And we have minds in our classrooms that are the innovators." },
+  { s: "craig", t: "Absolutely. And I love the idea of the rewilding where it's validating that experimenting and diversity and trying stuff — and the mix. The mix itself is the juice." },
+  { s: "madeline", t: "Conflicting views. People who think one thing, people who think the opposite — let it all live." },
+  { s: "craig", t: "Yeah." },
+  { s: "madeline", t: "Okay. Well, there could be educators or school leaders now going, well, that's wonderful, but I have to start tomorrow, I'm in a school, and rewilding is another planet. So if you were going to give them advice, what are some simple things or places they could start?" },
+  { s: "craig", t: "My advice is don't be scared. It really is. On a very simple level, feel like you've got the capacity to try these tools. Experiment with them in your own life if you want to. Learn about them yourself before you put them in the classroom and really get to know what they can do from a non-fearful standpoint. Read what others are doing that's innovative. And I think don't let others guide you in terms of saying this is how things should work. Or this is what the future is going to be. Nobody knows what education is going to look like in two, five, ten years. All of that is so unknown. The next five minutes feel really uncertain. So I think for our teachers, rather than standing at that precipice and thinking, where do I go from here and it's scary — I think, know that you know as much as anybody else. Use the tools, experiment with them, see what works, have conversations with others, and feel the potential of just seeing where things go from here." },
+  { s: "madeline", t: "That's so clever. I will often say to parents, you know your kid and there isn't actually a rule book. And there's plenty of information, but there isn't a rule book. And nobody's had your kid before. And I think that's so smart to say to educators — you're there with a deep passion. You really are people that teach. And you've done everything you've done up until this point. And you basically got to back that. And then step into the world." },
+  { s: "craig", t: "I think so. You've got to back yourself and trust that you've got the wisdom to do the right thing. You're there for the right reason. You're passionate about these kids exceeding. See where the tools can help to build and complement that going forward." },
+  { s: "madeline", t: "Great. Okay. Well, what about the parents now? The parents are going, well, the school's rewilding again. What's going to go on? So what advice would you give to parents?" },
+  { s: "craig", t: "I think parents, in the same way that parents were such a massive part of the technological lessons we learned earlier — and because they were using them themselves at home as well — I think families, talk to schools, talk to your children, know this is a changing space. And recognise — I mean, the things we've talked about. I'm not ignoring any of the challenges around social relationships with chatbots. The different challenges that might come from rabbit holes in these different spaces that children might go — totally accept that. And think we need to be really sensible and wise. But also, I'd say don't just have the doom perspective on these things. Do think more broadly. Look more broadly. See the benefits and the positives that are also coming out of this space. And really navigate it with that openness to think, I want my children to be safe and happy. I also want to use the things that can potentially maximise their potential and the options going forward as well." },
+  { s: "madeline", t: "Brilliant. This conversation has given me a real opening and a bit of an epiphany. And I've connected for myself something that wasn't connected. And that is that yes, AI and yes technology, but it equally rises together with conversation. And that's actually an incredible thing for humanity. And if we just keep talking and having AI be this new possibility, then something incredible is available." },
+  { s: "craig", t: "Totally great. Yeah, amazing." },
+  { s: "madeline", t: "Anything else you want to add?" },
+  { s: "craig", t: "No, I've got a platform called the Universal Sandpit that's got three AI tools. It's free resources. Inclusive educators across the world are using it. If people are thinking, where do I start? Particularly parents and educators who just want something simple to guide them — I do recommend having a look at the Universal Sandpit and seeing where you could go from there as well." },
+  { s: "madeline", t: "Brilliant. Well, Craig, it's been really moving today. And I thank you for every path your life has taken you down that's brought you to this moment to make this difference for all of us. And I appreciate you having the conversation today." },
+  { s: "craig", t: "That's very kind. Thank you, Madeline. I've had a great time." },
+  { s: "narrator", t: "Thanks for listening to A Different Brilliant. An Aspect podcast focusing on the strengths, interests and aspirations of the autistic community. If you would like to learn more, visit our website aspect.org.au to listen to past episodes or send us a message. Make sure to like or subscribe to A Different Brilliant on your podcast app." }
+];
+
+const speakerLabels = { narrator: "Narrator", madeline: "Madeline", craig: "Craig" };
+const transcript = document.getElementById('transcript');
+const searchInput = document.getElementById('searchInput');
+const searchCount = document.getElementById('searchCount');
+const noResults = document.getElementById('noResults');
+
+function renderTranscript(filter = '') {
+  let html = '';
+  let matches = 0;
+  const lowerFilter = filter.toLowerCase();
+
+  lines.forEach(line => {
+    const contains = !filter || line.t.toLowerCase().includes(lowerFilter);
+    if (filter && !contains) return;
+
+    let text = line.t;
+    if (filter) {
+      const regex = new RegExp(`(${filter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+      text = text.replace(regex, '<mark>$1</mark>');
+      matches++;
+    }
+
+    html += `<div class="t-line t-${line.s}"><span class="speaker speaker-${line.s}">${speakerLabels[line.s]}</span><div class="bubble">${text}</div></div>`;
+  });
+
+  transcript.innerHTML = html;
+
+  if (filter) {
+    searchCount.textContent = matches + ' match' + (matches !== 1 ? 'es' : '');
+    noResults.style.display = matches === 0 ? 'block' : 'none';
+    transcript.style.display = matches === 0 ? 'none' : 'block';
+  } else {
+    searchCount.textContent = '';
+    noResults.style.display = 'none';
+    transcript.style.display = 'block';
+  }
+}
+
+let debounceTimer;
+searchInput.addEventListener('input', () => {
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(() => renderTranscript(searchInput.value.trim()), 200);
+});
+
+renderTranscript();
+</script>
+</body>
+</html>
